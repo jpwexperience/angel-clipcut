@@ -1,0 +1,28 @@
+@import "src/assets/scss/colors.scss";
+@import "src/assets/scss/mixins.scss";
+.row {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+	object-fit: cover;
+	text-align: left;
+	grid-gap: 20px;
+}
+
+.row, .controller {
+	margin: 0px 10px 20px 10px;
+}
+
+.controller, .column {
+	@include border;
+}
+
+.controller, .column {
+	background-color: $background-dark;
+}
+
+.title {
+	color: rgba(251, 250, 244, 1);
+	text-shadow: 2px 2px 1px #1b2532;
+	font-weight: 700;
+	font-size: 16pt;
+}

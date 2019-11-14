@@ -1,0 +1,17 @@
+<div class="buttons">
+	<!-- <input class="inFiles" type="File" id="upFile" multiple size="50" onchange="fileUp()"> -->
+	<label for="file">Choose File</label>
+	<input type="file" id="file" multiple (change)="fileUp($event.target.files)">
+</div>
+<div class="controller" id="controller">
+	<h2 class="title">Video Controller</h2>
+	<app-form></app-form>
+</div>
+<div class="row">
+	<div class="column">
+		<h2 class="title">Video Queue</h2>
+	</div>
+	<div class="column">
+		<h2 class="title">Clip Queue</h2>
+	</div>
+</div>
