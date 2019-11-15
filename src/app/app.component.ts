@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-const spawn = require('child_process');
+import { FilmInitService } from './film-init.service';
 
 @Component({
 	selector: 'app-root',
@@ -8,14 +8,13 @@ const spawn = require('child_process');
 })
 export class AppComponent {
 	title = 'angel-clipcut';
+	constructor(private filmInitService: FilmInitService) {}
 	fileUp(files){
+		let paths = [];
 		for (var i = 0; i < files.length; i++){
-			console.log(files[i].path);
-			var probe = spawn('ffmpeg', ['-h']);
-			probe.stderr.on('data', (data) =>{
-				console.log(`${data}`);
-			});
+			paths.push(files[i].path);
 		}
+		this.filmInitService.process(paths);
 	}	
 
 }
