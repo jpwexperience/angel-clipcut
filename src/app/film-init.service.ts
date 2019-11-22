@@ -84,7 +84,7 @@ export class FilmInitService {
 			extSubs,
 			width,
 			height);
-		//console.log(newFilm);
+		console.log(newFilm);
 		this.filmListService.addFilm(newFilm);
 	}
 	
