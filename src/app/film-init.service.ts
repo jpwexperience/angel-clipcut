@@ -15,11 +15,12 @@ export class FilmInitService {
 			let ffInfo = ffprobe(paths[i]);
 			let info = ffInfo[0];
 			let extSubs = ffInfo[1];
-			this.streamProcess(paths[i], info, extSubs);
+			let basename = ffInfo[2];
+			this.streamProcess(paths[i], info, extSubs, basename);
 		}
 	}
 
-	streamProcess(filePath, info, extSubs): void{
+	streamProcess(filePath, info, extSubs, name): void{
 		let streams = {
 			"total": [],
 			"video": [], 
@@ -78,13 +79,13 @@ export class FilmInitService {
 			} else {;}
 		}
 		let newFilm = new Film(filePath,
+			name,
 			streams["video"],
 			streams["audio"],
 			streams["sub"],
 			extSubs,
 			width,
 			height);
-		console.log(newFilm);
 		this.filmListService.addFilm(newFilm);
 	}
 	

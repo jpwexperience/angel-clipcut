@@ -1,0 +1,11 @@
+<div class="video" *ngFor="let film of films">
+	<p><b>{{film.name}}</b></p>
+	<div class="row">
+		<div class="col">
+			<button class="button" (click)="ayy($event)">Set Clip Options</button>
+		</div>
+		<div class="col">
+			<button class="button" (click)="ayy($event)">Remove Video</button>
+		</div>
+	</div>
+</div>

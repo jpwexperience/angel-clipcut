@@ -2,13 +2,8 @@ const path = require('path');
 const fs = require('fs');
 var ffmpeg = require('ffmpeg-static');
 
-function ayy(){
-	console.log('processing.js entered');
-}
-
 function ffprobe(filePath, sendOutput) {
 	let command = ffmpeg.path + " -hide_banner -i '" + filePath + "'";
-	console.log(command);
 	//Need to run synchronously to ffmpeg output is properly returned
 	let exec = require('child_process').execSync, child;
 	let extSubs = [];
@@ -31,5 +26,5 @@ function ffprobe(filePath, sendOutput) {
 		//We anticipate an error based on ffmpeg's usage
 		ffOut = e.stderr.toString();
 	}
-	return [ffOut, extSubs];
+	return [ffOut, extSubs, path.basename(filePath)];
 }

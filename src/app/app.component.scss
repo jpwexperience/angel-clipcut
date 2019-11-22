@@ -21,8 +21,7 @@
 }
 
 .title {
-	color: rgba(251, 250, 244, 1);
-	text-shadow: 2px 2px 1px #1b2532;
+	@include txtShadow;
 	font-weight: 700;
 	font-size: 16pt;
 }
