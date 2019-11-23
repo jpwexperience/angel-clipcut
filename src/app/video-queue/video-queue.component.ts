@@ -24,5 +24,8 @@ export class VideoQueueComponent implements OnInit {
 		console.log('Button Got Clicked.');
 		console.log(event);
 	}
+	removeFilm(film): void {
+		this.filmListService.removeFilm(film);
+	}
 
 }
