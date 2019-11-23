@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { FormFunctionalityService } from '../form-functionality.service';
+import { Film } from '../models/film';
 
 @Component({
 	selector: 'app-form',
@@ -7,9 +9,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class FormComponent implements OnInit {
 
-	constructor() { }
+	formFilm: Film;
+	constructor(private formFunctionalityService: FormFunctionalityService) {}
 
 	ngOnInit() {
+		this.getFormFilm();
 	}
 
+	getFormFilm(): void {
+		this.formFunctionalityService.getFormFilm().subscribe(formFilm => this.formFilm = formFilm);
+		console.log(this.formFilm);
+	}
 }

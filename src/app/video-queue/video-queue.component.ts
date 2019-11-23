@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FilmListService } from '../film-list.service';
+import { FormFunctionalityService } from '../form-functionality.service';
 import { Film } from '../models/film';
 
 @Component({
@@ -10,7 +11,10 @@ import { Film } from '../models/film';
 export class VideoQueueComponent implements OnInit {
 
 	films: Film[];
-	constructor(private filmListService: FilmListService) {}
+	constructor(
+		private filmListService: FilmListService,
+		private formFunctionalityService: FormFunctionalityService
+		) {}
 
 	ngOnInit() {
 		this.getFilms();
@@ -20,10 +24,10 @@ export class VideoQueueComponent implements OnInit {
 		this.filmListService.getFilms().subscribe(films => this.films = films);
 	}
 
-	ayy(event): void {
-		console.log('Button Got Clicked.');
-		console.log(event);
+	setFormFilm(film): void {
+		this.formFunctionalityService.setFormFilm(film);
 	}
+
 	removeFilm(film): void {
 		this.filmListService.removeFilm(film);
 	}
