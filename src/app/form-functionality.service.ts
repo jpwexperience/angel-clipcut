@@ -14,6 +14,5 @@ export class FormFunctionalityService {
 	
 	setFormFilm(inFilm): void {
 		this.formFilm = inFilm;
-		console.log(this.formFilm);
 	}
 }

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormFunctionalityService } from '../form-functionality.service';
+import { Observable } from 'rxjs';
 import { Film } from '../models/film';
 
 @Component({
@@ -18,6 +19,7 @@ export class FormComponent implements OnInit {
 
 	getFormFilm(): void {
 		this.formFunctionalityService.getFormFilm().subscribe(formFilm => this.formFilm = formFilm);
+		console.log('---Form Component Test---')
 		console.log(this.formFilm);
 	}
 }
