@@ -34,4 +34,8 @@ export class VideoQueueComponent implements OnInit {
 		this.filmListService.removeFilm(film);
 	}
 
+	logFilm(film): void {
+		console.log(film);
+	}
+
 }
