@@ -21,15 +21,15 @@
 			</div>
 			<div class="ext">
 				<b>Extension Choice</b>
-				<input #mp4 type="checkbox" name="ext" value="mp4" (change)="setExt($event, mp4.value)">
+				<input #mp4 type="checkbox" name="ext" value="mp4" [checked]="film.ext['mp4']" (change)="setExt($event, mp4.value, film)">
 				<label for="mp4">mp4</label>
-				<input #mkv type="checkbox" name="ext" value="mkv" (change)="setExt($event, mkv.value)">
+				<input #mkv type="checkbox" name="ext" value="mkv" [checked]="film.ext['mkv']" (change)="setExt($event, mkv.value, film)">
 				<label for="mkv">mkv</label>
-				<input #mov type="checkbox" name="ext" value="mov" (change)="setExt($event, mov.value)">
+				<input #mov type="checkbox" name="ext" value="mov" [checked]="film.ext['mov']" (change)="setExt($event, mov.value, film)">
 				<label for="mov">mov</label>
-				<input #gif type="checkbox" name="ext" value="gif" (change)="setExt($event, gif.value)">
+				<input #gif type="checkbox" name="ext" value="gif" [checked]="film.ext['gif']" (change)="setExt($event, gif.value, film)">
 				<label for="gif">gif</label>
-				<input #webm type="checkbox" name="ext" value="webm" (change)="setExt($event, webm.value)">
+				<input #webm type="checkbox" name="ext" value="webm" [checked]="film.ext['webm']" (change)="setExt($event, webm.value, film)">
 				<label for="webm">webm</label>
 			</div>
 			<div class="quality">

@@ -32,8 +32,14 @@ export class FormComponent implements OnInit {
 		film.dur = value;
 	}
 
-	setExt(event, value): void {
-		console.log(value + ' is checked: ' + event.currentTarget.checked);
+	setExt(event, value, film): void {
+		console.log('MP4 checked: ' + film.ext["mp4"]);
+		let isChecked = event.currentTarget.checked;
+		if(isChecked){
+			film.ext[value] = true;
+		} else{
+			film.ext[value] = false;
+		}
 	}
 
 }

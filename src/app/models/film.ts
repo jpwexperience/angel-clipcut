@@ -4,7 +4,13 @@ export class Film {
 	outDir = "";
 	start = "00:00:00.00";
 	dur = "1:00";
-	ext = [];
+	ext = {
+		mp4: true,
+		mov: false,
+		mkv: false,
+		gif: false,
+		webm: false
+	};
 	constructor(
 		public filePath: string, 
 		public name: string,
