@@ -1,4 +1,9 @@
 <div class="form">
+	<div class="video" *ngFor="let film of films">
+		<ng-container *ngIf="film.isForm">
+			<b>{{film.name}}</b>
+		</ng-container>
+	</div>
 	<div class="filename">
 		<b>Filename: {{formFilm.name}}</b>
 	</div>

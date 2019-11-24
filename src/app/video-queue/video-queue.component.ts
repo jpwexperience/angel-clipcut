@@ -11,6 +11,7 @@ import { Film } from '../models/film';
 export class VideoQueueComponent implements OnInit {
 
 	films: Film[];
+
 	constructor(
 		private filmListService: FilmListService,
 		private formFunctionalityService: FormFunctionalityService
@@ -25,6 +26,7 @@ export class VideoQueueComponent implements OnInit {
 	}
 
 	setFormFilm(film): void {
+		this.filmListService.clearForm(film);
 		this.formFunctionalityService.setFormFilm(film);
 	}
 

@@ -1,4 +1,5 @@
 export class Film {
+	isForm = false;
 	constructor(
 		public filePath: string, 
 		public name: string,
