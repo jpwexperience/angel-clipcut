@@ -12,5 +12,18 @@ export class ClipListService {
 	getClips(): Observable<Clip[]> {
 		return of(this.CLIPS);
 	}
+		/*
+	findClip(clip): Clip {
+		return this.CLIPS.find(match => match.name == clip.name);
+	}
 
+	addClip(clip): Clip {
+		CLIPS.push(clip);
+	}
+	
+	removeClip(clip): void {
+		let rmClip = this.findClip(clip);
+		this.CLIPS.splice(this.CLIPS.indexOf(rmClip), 1);
+	}
+		*/
 }

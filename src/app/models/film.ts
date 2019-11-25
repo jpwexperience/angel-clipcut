@@ -13,6 +13,8 @@ export class Film {
 	scale = 0;
 	cropW = 0;
 	cropH = 0;
+	framerate = 23;
+	bitrate = 0.50;
 	clipName = "";
 	vChoice = "0";
 	aChoice = "0";

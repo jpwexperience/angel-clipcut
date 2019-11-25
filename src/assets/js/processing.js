@@ -1,5 +1,6 @@
 const path = require('path');
 const fs = require('fs');
+const {dialog} = require('electron').remote;
 var ffmpeg = require('ffmpeg-static');
 
 function ffprobe(filePath, sendOutput) {
@@ -26,27 +27,15 @@ function ffprobe(filePath, sendOutput) {
 		//We anticipate an error based on ffmpeg's usage
 		ffOut = e.stderr.toString();
 	}
-	return [ffOut, extSubs, path.basename(filePath)];
+	return [ffOut, extSubs, path.basename(filePath), dirpath];
 }
 
-function filmDir(element){
-	let outDir = "";
-	console.log('---filmDir Entered---');
-	console.log(element);
-        if ('files' in element) {
-		console.log(element.files);
-                console.log(path.dirname(element.files[0].path));
-        }
-	/*
-        var tempFilm = findFilm(id);
-        var dirBut = document.getElementById('outDir-' + id);
-        if ('files' in dirBut) {
-                tempFilm.dirPath = dirBut.files[0].path;
-        }
-        $(document).ready(function () {
-                $('#outDir-' + id).attr('class', 'dirButtonCh');
-                $('#outDirBox-' + id).css('display', 'grid');
-                $('#outDirCon-' + id).html(tempFilm.dirPath);
-        });
-	*/
+function filmDir(film, callBack){
+	dialog.showOpenDialog( {
+		properties: ['openDirectory']
+	}).then(result => {
+		callBack(result.filePaths[0], film);
+	}).catch(err => {
+		console.log(err);
+	})
 }

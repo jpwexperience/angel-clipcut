@@ -46,6 +46,14 @@
 				<input #webm type="checkbox" name="ext" value="webm" [checked]="film.ext['webm']" (change)="setExt($event, webm.value, film)">
 				<label for="webm">webm</label>
 			</div>
+			<ng-container *ngIf="film.ext['webm']">
+				<b>Bitrate in MB: </b>
+				<input #bitrate type="number" value="{{film.bitrate}}" step="0.5" min="0" (change)="setBitrate(bitrate.value, film)">
+			</ng-container>
+			<ng-container *ngIf="film.ext['gif']">
+				<b>Framerate: </b>
+				<input #framerate type="number" value="{{film.framerate}}" min="0" (change)="setFramerate(framerate.value, film)">
+			</ng-container>
 			<div class="quality">
 				<b>Quality Level</b>
 				<input #crf type="range" min="1" max="100" value="{{film.crf}}" (change)="setCrf(crf.value, film)"> Value: {{film.crf}} 
@@ -72,6 +80,7 @@
 				<button #outDir (click)="getOutDir(film)">Set Output Directory</button>
 				<b>{{film.outDir}}</b>
 			</div>
+			<button #clipGen (click)="createClip(film)">Add to Clip Queue</button>
 		</ng-container>
 	</div>
 

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-//import { FormFunctionalityService } from '../form-functionality.service';
 import { Observable } from 'rxjs';
 import { FilmListService } from '../film-list.service';
+import { ClipInitService } from '../clip-init.service';
 import { Film } from '../models/film';
 declare var filmDir: any;
 
@@ -15,6 +15,7 @@ export class FormComponent implements OnInit {
 
 	constructor(
 		private filmListService: FilmListService,
+		private clipInitService: ClipInitService
 		) {}
 
 	ngOnInit() {
@@ -58,6 +59,14 @@ export class FormComponent implements OnInit {
 		film.crf = value;
 	}
 
+	setBitrate(value, film): void {
+		film.bitrate = value;
+	}
+
+	setFramerate(value, film): void {
+		film.framerate = value;
+	}
+
 	setClipName(value, film): void {
 		film.clipName = value;
 	}
@@ -73,20 +82,18 @@ export class FormComponent implements OnInit {
 	}
 
 	setVideoStream(value, film): void {
-		console.log('---Video Choice---');
-		console.log(value);
 		film.vChoice = value;
 	}
 	
 	setAudioStream(value, film): void {
-		console.log('---Audio Choice---');
-		console.log(value);
 		film.aChoice = value;
 	}
 
 	setSubStream(value, film): void {
-		console.log('---Subtitle Choice---');
-		console.log(value);
 		film.sChoice = value;
+	}
+
+	createClip(film): void {
+		this.clipInitService.create(film);
 	}
 }
