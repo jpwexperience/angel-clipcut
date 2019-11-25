@@ -62,9 +62,14 @@ export class FormComponent implements OnInit {
 		film.clipName = value;
 	}
 
-	setOutDir(value, film): void {
-		console.log(value);
-		filmDir(value);
+	setOutDir(path, film): void {
+		if(path != undefined){
+			film.outDir = path;
+		}
+	}
+
+	getOutDir(film): void {
+		filmDir(film, this.setOutDir);
 	}
 
 	setVideoStream(value, film): void {

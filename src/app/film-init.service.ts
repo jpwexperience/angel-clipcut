@@ -16,11 +16,12 @@ export class FilmInitService {
 			let info = ffInfo[0];
 			let extSubs = ffInfo[1];
 			let basename = ffInfo[2];
-			this.streamProcess(paths[i], info, extSubs, basename);
+			let outDir = ffInfo[3];
+			this.streamProcess(paths[i], info, extSubs, basename, outDir);
 		}
 	}
 
-	streamProcess(filePath, info, extSubs, name): void{
+	streamProcess(filePath, info, extSubs, name, outDir): void{
 		let streams = {
 			"total": [],
 			"video": [], 
@@ -80,6 +81,7 @@ export class FilmInitService {
 		}
 		let newFilm = new Film(filePath,
 			name,
+			outDir,
 			streams["video"],
 			streams["audio"],
 			streams["sub"],

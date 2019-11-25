@@ -1,7 +1,6 @@
 export class Film {
 	isForm = false;
 	crf = 18;
-	outDir = "";
 	start = "00:00:00.00";
 	dur = "1:00";
 	ext = {
@@ -21,6 +20,7 @@ export class Film {
 	constructor(
 		public filePath: string, 
 		public name: string,
+		public outDir: string,
 		public vStreams: string[], 
 		public aStreams: string[], 
 		public sStreams: string[], 

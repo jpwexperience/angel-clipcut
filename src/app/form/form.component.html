@@ -68,9 +68,9 @@
 				<input #clipName type="text" class="inputBox" value="{{film.clipName}}" (keyup)="setClipName(clipName.value, film)">
 			</div>
 			<div class="outdir">
-				<b>Output Folder</b>
-				<input #outDir type="file" (change)="setOutDir(outDir, film)" webkitdirectory directory/>
-				<input #test type="text" class="inputBox" value="">
+				<b>Output Folder:</b>
+				<button #outDir (click)="getOutDir(film)">Set Output Directory</button>
+				<b>{{film.outDir}}</b>
 			</div>
 		</ng-container>
 	</div>
