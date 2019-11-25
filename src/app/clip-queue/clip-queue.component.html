@@ -1,1 +1,11 @@
-<p>clip-queue works!</p>
+<div class="clip" *ngFor="let clip of clips">
+	<p><b>{{clip.name}}</b></p>
+	<div class="row">
+		<div class="col">
+			<button class="button" (click)="runCommand(clip)">Run Command</button>
+		</div>
+		<div class="col">
+			<button class="button" (click)="removeClip(clip)">Remove Clip</button>
+		</div>
+	</div>
+</div>

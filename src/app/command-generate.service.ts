@@ -78,7 +78,6 @@ export class CommandGenerateService {
 		}
 		commandArr = commandArr.concat(crf);
 		commandArr.push(outFile);
-		console.log(commandArr);
 		return commandArr;
 	}
 

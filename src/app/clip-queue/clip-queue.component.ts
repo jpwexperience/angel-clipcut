@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ClipListService } from '../clip-list.service';
 import { Clip } from '../models/clip';
+declare var createClip: any;
 
 @Component({
   selector: 'app-clip-queue',
@@ -11,9 +12,7 @@ export class ClipQueueComponent implements OnInit {
 
 	clips: Clip[];
 
-	constructor(
-		private clipListService: ClipListService,
-		) {}
+	constructor(private clipListService: ClipListService) {}
 
 	ngOnInit() {
 		this.getClips();
@@ -21,6 +20,14 @@ export class ClipQueueComponent implements OnInit {
 
 	getClips(): void {
 		this.clipListService.getClips().subscribe(clips => this.clips = clips);
+	}
+
+	removeClip(clip): void {
+		this.clipListService.removeClip(clip);
+	}
+
+	runCommand(clip): void {	
+		createClip(clip);
 	}
 
 }

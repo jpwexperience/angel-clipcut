@@ -3,6 +3,5 @@ export class Clip {
 	gifCmd = "";
 	constructor(
 		public name: string, 
-		public command: string[],) {
-	}
+		public command: string[]) {}
 }
