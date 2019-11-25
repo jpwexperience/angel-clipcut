@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { FilmListService } from '../film-list.service';
 import { Film } from '../models/film';
+declare var filmDir: any;
 
 @Component({
 	selector: 'app-form',
@@ -59,6 +60,11 @@ export class FormComponent implements OnInit {
 
 	setClipName(value, film): void {
 		film.clipName = value;
+	}
+
+	setOutDir(value, film): void {
+		console.log(value);
+		filmDir(value);
 	}
 
 	setVideoStream(value, film): void {

@@ -28,3 +28,25 @@ function ffprobe(filePath, sendOutput) {
 	}
 	return [ffOut, extSubs, path.basename(filePath)];
 }
+
+function filmDir(element){
+	let outDir = "";
+	console.log('---filmDir Entered---');
+	console.log(element);
+        if ('files' in element) {
+		console.log(element.files);
+                console.log(path.dirname(element.files[0].path));
+        }
+	/*
+        var tempFilm = findFilm(id);
+        var dirBut = document.getElementById('outDir-' + id);
+        if ('files' in dirBut) {
+                tempFilm.dirPath = dirBut.files[0].path;
+        }
+        $(document).ready(function () {
+                $('#outDir-' + id).attr('class', 'dirButtonCh');
+                $('#outDirBox-' + id).css('display', 'grid');
+                $('#outDirCon-' + id).html(tempFilm.dirPath);
+        });
+	*/
+}
