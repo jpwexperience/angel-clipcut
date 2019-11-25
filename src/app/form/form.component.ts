@@ -33,7 +33,6 @@ export class FormComponent implements OnInit {
 	}
 
 	setExt(event, value, film): void {
-		console.log('MP4 checked: ' + film.ext["mp4"]);
 		let isChecked = event.currentTarget.checked;
 		if(isChecked){
 			film.ext[value] = true;
@@ -42,4 +41,37 @@ export class FormComponent implements OnInit {
 		}
 	}
 
+	setWidth(value, film): void {
+		film.cropW = value;
+	}
+
+	setHeight(value, film): void {
+		film.cropH = value;
+	}
+
+	setScale(value, film): void {
+		film.scale = value;
+	}
+
+	setClipName(value, film): void {
+		film.clipName = value;
+	}
+
+	setVideoStream(value, film): void {
+		console.log('---Video Choice---');
+		console.log(value);
+		film.vChoice = value;
+	}
+	
+	setAudioStream(value, film): void {
+		console.log('---Audio Choice---');
+		console.log(value);
+		film.aChoice = value;
+	}
+
+	setSubStream(value, film): void {
+		console.log('---Subtitle Choice---');
+		console.log(value);
+		film.sChoice = value;
+	}
 }

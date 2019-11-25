@@ -11,6 +11,13 @@ export class Film {
 		gif: false,
 		webm: false
 	};
+	scale = 0;
+	cropW = 0;
+	cropH = 0;
+	clipName = "";
+	vChoice = "0";
+	aChoice = "0";
+	sChoice = "no-sub";
 	constructor(
 		public filePath: string, 
 		public name: string,
@@ -20,5 +27,9 @@ export class Film {
 		public extSubs: string[], 
 		public width: number, 
 		public height: number) {
+		this.scale = width;
+		this.cropW = width;
+		this.cropH = height;
+		this.clipName = name + '-cut';
         }
 }
