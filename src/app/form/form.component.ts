@@ -53,6 +53,10 @@ export class FormComponent implements OnInit {
 		film.scale = value;
 	}
 
+	setCrf(value, film): void {
+		film.crf = value;
+	}
+
 	setClipName(value, film): void {
 		film.clipName = value;
 	}

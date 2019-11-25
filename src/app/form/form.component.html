@@ -48,9 +48,10 @@
 			</div>
 			<div class="quality">
 				<b>Quality Level</b>
+				<input #crf type="range" min="1" max="100" value="{{film.crf}}" (change)="setCrf(crf.value, film)"> Value: {{film.crf}} 
 			</div>
 			<div class="crop">
-				<b>Crop: </b>
+				<b>Crop:</b>
 				<input #cropW type="number" class="cropBox" value="{{film.cropW}}" step="2" min="2" 
 					max="{{film.width}}" (change)="setWidth(cropW.value, film)">
 				X
