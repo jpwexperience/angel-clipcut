@@ -1,5 +1,14 @@
 <div class="clip" *ngFor="let clip of clips">
 	<p><b>{{clip.name}}</b></p>
+	<ng-container *ngIf="clip.running">
+		<div class="processing"><p>
+		<b>Processing Clip, this can take a while</b>
+		<span><b>.</b></span><span><b>.</b></span><span><b>.</b></span>
+			</p></div>
+	</ng-container>
+	<ng-container *ngIf="clip.complete">
+		<p>Clip Finished</p>
+	</ng-container>
 	<div class="row">
 		<div class="col">
 			<button class="button" (click)="runCommand(clip)">Run Command</button>
@@ -10,5 +19,10 @@
 		<div class="col">
 			<button class="button" (click)="logClip(clip)">Log Clip</button>
 		</div>
+		<ng-container *ngIf="clip.complete">
+			<div class="col">
+				<button class="button" (click)="openClip(clip)">Show Clip in Folder</button>
+			</div>
+		</ng-container>
 	</div>
 </div>

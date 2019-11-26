@@ -2,6 +2,7 @@ const path = require('path');
 const fs = require('fs');
 const {dialog} = require('electron').remote;
 const spawn = require('child_process').spawn;
+const {shell} = require('electron');
 var ffmpeg = require('ffmpeg-static');
 
 function ffprobe(filePath, sendOutput) {
@@ -41,7 +42,7 @@ function filmDir(film, callBack){
 	})
 }
 
-function createClip(clip){
+function createClip(clip, callback){
 	let duration = clip.command[clip.command.findIndex(element => element === '-t') + 1];
 	const ffCmd = spawn(ffmpeg.path, clip.command);
 	ffCmd.stderr.on('data', (data) => {
@@ -49,13 +50,14 @@ function createClip(clip){
 	});
 	ffCmd.on('close', (code) => {
 		console.log('Clip is Finished');	
+		callback(clip);
 	});
 	ffCmd.on('error', (err) => {
 		console.log('FFmpeg Command Issue: ' + err);
 	});
 }
 
-function createGif(clip){
+function createGif(clip, callback){
 	const ffCmd = spawn(ffmpeg.path, clip.command);
 	ffCmd.stderr.on('data', (data) => {
 		console.log(`${data}`);
@@ -71,6 +73,7 @@ function createGif(clip){
 				console.log(`${data}`);
 			});
 			gifGen.on('close', (code) => {
+				callback(clip);
 				console.log('Gif Creation Finished');
 				let exec = require('child_process').exec, child;
 				child = exec('rm "' + clip.palCommand[clip.palCommand.length - 1] + 
@@ -116,4 +119,9 @@ function timecodeToSeconds(time){
 		console.log('Too many things. Default to 1:00');
 		return 60;
 	}
+}
+
+function openFile(clip){
+	let filePath = clip.command[clip.command.length - 1];
+	shell.showItemInFolder(filePath);
 }

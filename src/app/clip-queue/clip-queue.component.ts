@@ -3,6 +3,7 @@ import { ClipListService } from '../clip-list.service';
 import { Clip } from '../models/clip';
 declare var createClip: any;
 declare var createGif: any;
+declare var openFile: any;
 
 @Component({
   selector: 'app-clip-queue',
@@ -28,15 +29,31 @@ export class ClipQueueComponent implements OnInit {
 	}
 
 	runCommand(clip): void {	
+		clip.running = true;
 		if(clip.palCommand.length == 0){
-			createClip(clip);
+			createClip(clip, testFinished);
 		} else {
-			createGif(clip);
+			createGif(clip, testFinished);
 		}
+	}
+
+	finished(clip): void {
+		clip.running = false;
+		clip.complete = true;
+	}
+
+	openClip(clip): void {
+		openFile(clip);
 	}
 
 	logClip(clip): void {
 		console.log(clip);
 	}
 
+}
+
+function testFinished(clip) {
+	console.log('---CLIP IS FINISHED---');
+	clip.running = false;
+	clip.complete = true;
 }
