@@ -1,6 +1,7 @@
 const path = require('path');
 const fs = require('fs');
 const {dialog} = require('electron').remote;
+const spawn = require('child_process').spawn;
 var ffmpeg = require('ffmpeg-static');
 
 function ffprobe(filePath, sendOutput) {
@@ -38,4 +39,81 @@ function filmDir(film, callBack){
 	}).catch(err => {
 		console.log(err);
 	})
+}
+
+function createClip(clip){
+	let duration = clip.command[clip.command.findIndex(element => element === '-t') + 1];
+	const ffCmd = spawn(ffmpeg.path, clip.command);
+	ffCmd.stderr.on('data', (data) => {
+		console.log(`${data}`);
+	});
+	ffCmd.on('close', (code) => {
+		console.log('Clip is Finished');	
+	});
+	ffCmd.on('error', (err) => {
+		console.log('FFmpeg Command Issue: ' + err);
+	});
+}
+
+function createGif(clip){
+	const ffCmd = spawn(ffmpeg.path, clip.command);
+	ffCmd.stderr.on('data', (data) => {
+		console.log(`${data}`);
+	});
+	ffCmd.on('close', (code) => {
+		const palGen = spawn(ffmpeg.path, clip.palCommand);
+		palGen.stderr.on('data', (data) => {
+			console.log(`${data}`);
+		});
+		palGen.on('close', (code) => {
+			const gifGen = spawn(ffmpeg.path, clip.gifCommand);
+			gifGen.stderr.on('data', (data) => {
+				console.log(`${data}`);
+			});
+			gifGen.on('close', (code) => {
+				console.log('Gif Creation Finished');
+				let exec = require('child_process').exec, child;
+				child = exec('rm "' + clip.palCommand[clip.palCommand.length - 1] + 
+					'" && rm "' + clip.gifCommand[2] + '"',
+					    function (error, stdout, stderr) {
+						console.log('stdout: ' + stdout);
+						console.log('stderr: ' + stderr);
+						if (error !== null) {
+						     console.log('exec error: ' + error);
+						}
+					    });
+			});
+		});
+	});
+
+}
+
+function timecodeToSeconds(time){
+	//console.log('time: ' + time);
+	var durArr = time.split(':');
+	var milliString = time.split('.');
+	var milli = 0;
+	if (typeof milliString[1] != 'undefined'){
+		milli = parseInt(milliString[1].substring(0, 3)) * 0.001;
+	}
+	var len = durArr.length;
+	var durNum = [];
+	//console.log(durArr);
+	for (var i = 0; i < len; i++){
+		durNum.push(parseInt(durArr[i]));
+	}
+	//hours first, then minutes, then seconds
+	if(len == 1){
+		//return Math.floor(durNum[0]);
+		return durNum[0] + milli;
+	} else if(len == 2){
+		//return Math.floor(durNum[1] + (60 * durNum[0]));
+		return durNum[1] + (60 * durNum[0]) + milli;
+	} else if(len == 3){
+		//return Math.floor(durNum[2] + (60 * durNum[1]) + (3600 * durNum[0]));
+		return durNum[2] + (60 * durNum[1]) + (3600 * durNum[0]) + milli;
+	} else{
+		console.log('Too many things. Default to 1:00');
+		return 60;
+	}
 }

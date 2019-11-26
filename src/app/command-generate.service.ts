@@ -7,7 +7,22 @@ export class CommandGenerateService {
 
 	constructor() { }
 
-	
+	palGenerate(film): string[] {
+		let outFile = film.outDir + "/" + film.clipName + ".mp4";
+		let palFile = film.outDir + "/" + film.clipName + "-pal.png";
+		let palCommand = ["-y", "-i", outFile, "-vf", "fps=" + film.framerate + 
+			",scale=" + film.scale + ":-1:flags=lanczos,palettegen", palFile];
+		return palCommand;	
+	}
+
+	gifGenerate(film): string[] {
+		let outFile = film.outDir + "/" + film.clipName + ".mp4";
+		let palFile = film.outDir + "/" + film.clipName + "-pal.png";
+		let gifFile = film.outDir + "/" + film.clipName + ".gif"
+		let gifCommand = ["-y", "-i", outFile, "-i", palFile, "-filter_complex", "fps=" + film.framerate +
+			",scale=" + film.scale + ":-1:flags=lanczos[x];[x][1:v]paletteuse", gifFile];
+		return gifCommand;
+	}
 
 	generate(film, extension): string[] {
 		var commandArr = ["-y", "-hide_banner"];

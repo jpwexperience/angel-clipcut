@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ClipListService } from '../clip-list.service';
 import { Clip } from '../models/clip';
 declare var createClip: any;
+declare var createGif: any;
 
 @Component({
   selector: 'app-clip-queue',
@@ -27,7 +28,15 @@ export class ClipQueueComponent implements OnInit {
 	}
 
 	runCommand(clip): void {	
-		createClip(clip);
+		if(clip.palCommand.length == 0){
+			createClip(clip);
+		} else {
+			createGif(clip);
+		}
+	}
+
+	logClip(clip): void {
+		console.log(clip);
 	}
 
 }

@@ -1,6 +1,6 @@
 export class Clip {
-	palCmd = "";
-	gifCmd = "";
+	palCommand = [];
+	gifCommand = [];
 	constructor(
 		public name: string, 
 		public command: string[]) {}
