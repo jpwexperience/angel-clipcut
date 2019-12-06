@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ClipListService } from '../clip-list.service';
 import { Clip } from '../models/clip';
+//import * as child from 'child_process';
+
 declare var createClip: any;
 declare var createGif: any;
 declare var openFile: any;
@@ -29,12 +31,25 @@ export class ClipQueueComponent implements OnInit {
 	}
 
 	runCommand(clip): void {	
+		//const ffCmd = child.spawn('ls', ['-la']);
+		const ffCmd = ayy('ls', ['-la']);
+		ffCmd.stderr.on('data', (data) => {
+			console.log(`${data}`);
+		});
+		ffCmd.on('close', (code) => {
+			console.log('Clip is Finished');
+		});
+		ffCmd.on('error', (err) => {
+			console.log('FFmpeg Command Issue: ' + err);
+		});
+		/*
 		clip.running = true;
 		if(clip.palCommand.length == 0){
 			createClip(clip, testFinished);
 		} else {
 			createGif(clip, testFinished);
 		}
+		 */
 	}
 
 	finished(clip): void {
