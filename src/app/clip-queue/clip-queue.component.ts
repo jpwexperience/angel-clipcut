@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ClipListService } from '../clip-list.service';
 import { Clip } from '../models/clip';
-//import * as child from 'child_process';
+import * as child from 'child_process';
 
 declare var createClip: any;
 declare var createGif: any;
@@ -31,8 +31,7 @@ export class ClipQueueComponent implements OnInit {
 	}
 
 	runCommand(clip): void {	
-		//const ffCmd = child.spawn('ls', ['-la']);
-		const ffCmd = ayy('ls', ['-la']);
+		const ffCmd = child.spawn('ls', ['-la']);
 		ffCmd.stderr.on('data', (data) => {
 			console.log(`${data}`);
 		});
