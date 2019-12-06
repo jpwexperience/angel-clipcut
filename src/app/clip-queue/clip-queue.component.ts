@@ -1,22 +1,24 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { ClipListService } from '../clip-list.service';
 import { Clip } from '../models/clip';
-import * as child from 'child_process';
 
 declare var createClip: any;
 declare var createGif: any;
 declare var openFile: any;
 
 @Component({
-  selector: 'app-clip-queue',
-  templateUrl: './clip-queue.component.html',
-  styleUrls: ['./clip-queue.component.scss']
+	selector: 'app-clip-queue',
+	templateUrl: './clip-queue.component.html',
+	styleUrls: ['./clip-queue.component.scss'],
 })
 export class ClipQueueComponent implements OnInit {
+	changeDetectorRef: ChangeDetectorRef
 
 	clips: Clip[];
 
-	constructor(private clipListService: ClipListService) {}
+	constructor(private clipListService: ClipListService,changeDetectorRef: ChangeDetectorRef) {
+		this.changeDetectorRef = changeDetectorRef;
+	}
 
 	ngOnInit() {
 		this.getClips();
@@ -31,29 +33,12 @@ export class ClipQueueComponent implements OnInit {
 	}
 
 	runCommand(clip): void {	
-		const ffCmd = child.spawn('ls', ['-la']);
-		ffCmd.stderr.on('data', (data) => {
-			console.log(`${data}`);
-		});
-		ffCmd.on('close', (code) => {
-			console.log('Clip is Finished');
-		});
-		ffCmd.on('error', (err) => {
-			console.log('FFmpeg Command Issue: ' + err);
-		});
-		/*
 		clip.running = true;
 		if(clip.palCommand.length == 0){
-			createClip(clip, testFinished);
+			createClip(clip, this.clipFinished);
 		} else {
-			createGif(clip, testFinished);
+			createGif(clip, this.clipFinished);
 		}
-		 */
-	}
-
-	finished(clip): void {
-		clip.running = false;
-		clip.complete = true;
 	}
 
 	openClip(clip): void {
@@ -64,10 +49,15 @@ export class ClipQueueComponent implements OnInit {
 		console.log(clip);
 	}
 
+	//Use fat arrow function to use changeDetectorRef 
+	//since it wouldn't be found otherwise
+	clipFinished = (clip) => {
+		console.log('---CLIP IS FINISHED---');
+		clip.running = false;
+		clip.complete = true;
+		this.changeDetectorRef.detectChanges();
+	}
+
 }
 
-function testFinished(clip) {
-	console.log('---CLIP IS FINISHED---');
-	clip.running = false;
-	clip.complete = true;
-}
+
