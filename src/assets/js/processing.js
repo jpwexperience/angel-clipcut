@@ -42,25 +42,29 @@ function filmDir(film, callBack){
 	})
 }
 
-function createClip(clip, callback){
-	let duration = clip.command[clip.command.findIndex(element => element === '-t') + 1];
+function createClip(clip, finished, clipUpdate){
+	let duration = timecodeToSec(clip.command[clip.command.findIndex(element => element === '-t') + 1]);
 	const ffCmd = spawn(ffmpeg.path, clip.command);
 	ffCmd.stderr.on('data', (data) => {
 		console.log(`${data}`);
+		let update = progUpdate(data, duration);
+		clipUpdate(clip, update);
 	});
 	ffCmd.on('close', (code) => {
-		console.log('Clip is Finished');	
-		callback(clip);
+		finished(clip);
 	});
 	ffCmd.on('error', (err) => {
 		console.log('FFmpeg Command Issue: ' + err);
 	});
 }
 
-function createGif(clip, callback){
+function createGif(clip, finished, clipUpdate){
+	let duration = timecodeToSec(clip.command[clip.command.findIndex(element => element === '-t') + 1]);
 	const ffCmd = spawn(ffmpeg.path, clip.command);
 	ffCmd.stderr.on('data', (data) => {
 		console.log(`${data}`);
+		let update = progUpdate(data, duration);
+		clipUpdate(clip, update);
 	});
 	ffCmd.on('close', (code) => {
 		const palGen = spawn(ffmpeg.path, clip.palCommand);
@@ -68,12 +72,15 @@ function createGif(clip, callback){
 			console.log(`${data}`);
 		});
 		palGen.on('close', (code) => {
+			clipUpdate(clip, 0);
 			const gifGen = spawn(ffmpeg.path, clip.gifCommand);
 			gifGen.stderr.on('data', (data) => {
 				console.log(`${data}`);
+				update = progUpdate(data, duration);
+				clipUpdate(clip, update);
 			});
 			gifGen.on('close', (code) => {
-				callback(clip);
+				finished(clip);
 				console.log('Gif Creation Finished');
 				let exec = require('child_process').exec, child;
 				child = exec('rm "' + clip.palCommand[clip.palCommand.length - 1] + 
@@ -91,8 +98,7 @@ function createGif(clip, callback){
 
 }
 
-function timecodeToSeconds(time){
-	//console.log('time: ' + time);
+function timecodeToSec(time){
 	var durArr = time.split(':');
 	var milliString = time.split('.');
 	var milli = 0;
@@ -107,13 +113,10 @@ function timecodeToSeconds(time){
 	}
 	//hours first, then minutes, then seconds
 	if(len == 1){
-		//return Math.floor(durNum[0]);
 		return durNum[0] + milli;
 	} else if(len == 2){
-		//return Math.floor(durNum[1] + (60 * durNum[0]));
 		return durNum[1] + (60 * durNum[0]) + milli;
 	} else if(len == 3){
-		//return Math.floor(durNum[2] + (60 * durNum[1]) + (3600 * durNum[0]));
 		return durNum[2] + (60 * durNum[1]) + (3600 * durNum[0]) + milli;
 	} else{
 		console.log('Too many things. Default to 1:00');
@@ -124,4 +127,21 @@ function timecodeToSeconds(time){
 function openFile(clip){
 	let filePath = clip.command[clip.command.length - 1];
 	shell.showItemInFolder(filePath);
+}
+
+function progUpdate(line, duration){
+        var timeRegex = /time=[0-9][0-9]:[0-9][0-9]:[0-9][0-9][.][0-9]*/;
+        var failRegex = /Conversion failed!/;
+        var fail = line.toString().match(failRegex);
+        if (fail){
+                return -2;
+        }
+        let time = line.toString().match(timeRegex);
+        if (time){
+                time = time[0].substring(5);
+                let timeSec = timecodeToSec(time);
+                let percentDone = Math.floor((timeSec / duration) * 100);
+		return percentDone;
+        }
+        return 0;
 }

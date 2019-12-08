@@ -1,84 +1,86 @@
-<div class="form" *ngFor="let film of films">
+<ng-container *ngFor="let film of films">
 	<ng-container *ngIf="film.isForm">
-		<div class="filename">
-			<b>Filename: {{film.name}}</b>
+		<div class="form">
+			<div class="filename">
+				<b>Filename: {{film.name}}</b>
+			</div>
+			<div class="streams">
+				<b>Video Streams:</b>
+				<select #videoStream (change)="setVideoStream(videoStream.value, film)">
+					<option *ngFor="let stream of film.vStreams; index as i" value="{{i}}">{{stream}}</option>
+				</select>
+				<br>
+				<b>Audio Streams:</b>
+				<select #audioStream (change)="setAudioStream(audioStream.value, film)">
+					<option value="" selected disabled hidden>Choose Audio Stream</option>
+					<option *ngFor="let stream of film.aStreams; index as i" value="{{i}}">{{stream}}</option>
+					<option value="no-audio">No Audio</option>
+				</select>
+				<br>
+				<b>Subtitle Streams:</b>
+				<select #subStream (change)="setSubStream(subStream.value, film)">
+					<option value="" selected disabled hidden>Choose Subtitle Stream</option>
+					<option value="no-sub">No Subtitles</option>
+					<option *ngFor="let stream of film.sStreams; index as i" value="{{i}}">{{stream}}</option>
+					<option *ngFor="let sub of film.extSubs; index as i" value="ext-{{i}}">{{sub}}</option>
+				</select>
+			</div>
+			<div class="start">
+				<b>Clip Start: </b>
+				<input #start type="text" class="inputBox" value="{{film.start}}" (keyup)="setStart(start.value, film)">
+			</div>
+			<div class="duration">
+				<b>Clip Duration: </b>
+				<input #dur type="text" class="inputBox" value="{{film.dur}}" (keyup)="setDur(dur.value, film)">
+			</div>
+			<div class="ext">
+				<b>Extension Choice</b>
+				<input #mp4 type="checkbox" name="ext" value="mp4" [checked]="film.ext['mp4']" (change)="setExt($event, mp4.value, film)">
+				<label for="mp4">mp4</label>
+				<input #mkv type="checkbox" name="ext" value="mkv" [checked]="film.ext['mkv']" (change)="setExt($event, mkv.value, film)">
+				<label for="mkv">mkv</label>
+				<input #mov type="checkbox" name="ext" value="mov" [checked]="film.ext['mov']" (change)="setExt($event, mov.value, film)">
+				<label for="mov">mov</label>
+				<input #gif type="checkbox" name="ext" value="gif" [checked]="film.ext['gif']" (change)="setExt($event, gif.value, film)">
+				<label for="gif">gif</label>
+				<input #webm type="checkbox" name="ext" value="webm" [checked]="film.ext['webm']" (change)="setExt($event, webm.value, film)">
+				<label for="webm">webm</label>
+			</div>
+			<ng-container *ngIf="film.ext['webm']">
+				<b>Bitrate in MB: </b>
+				<input #bitrate type="number" value="{{film.bitrate}}" step="0.5" min="0" (change)="setBitrate(bitrate.value, film)">
+			</ng-container>
+			<ng-container *ngIf="film.ext['gif']">
+				<b>Framerate: </b>
+				<input #framerate type="number" value="{{film.framerate}}" min="0" (change)="setFramerate(framerate.value, film)">
+			</ng-container>
+			<div class="quality">
+				<b>Quality Level</b>
+				<input #crf type="range" min="1" max="100" value="{{film.crf}}" (change)="setCrf(crf.value, film)"> Value: {{film.crf}} 
+			</div>
+			<div class="crop">
+				<b>Crop:</b>
+				<input #cropW type="number" class="cropBox" value="{{film.cropW}}" step="2" min="2" 
+													    max="{{film.width}}" (change)="setWidth(cropW.value, film)">
+				X
+				<input #cropH type="number" class="cropBox" value="{{film.cropH}}" step="2" min="2" 
+													    max="{{film.height}}" (change)="setHeight(cropH.value, film)">
+			</div>
+			<div class="scale">
+				<b>Scale Width:</b>
+				<input #scale type="number" class="scaleBox" value="{{film.scale}}" step="2" min="2" 
+													     max="{{film.cropW}}" (change)="setScale(scale.value, film)">
+			</div>
+			<div class="name">
+				<b>Clip Name:</b>
+				<input #clipName type="text" class="inputBox" value="{{film.clipName}}" (keyup)="setClipName(clipName.value, film)">
+			</div>
+			<div class="outdir">
+				<b>Output Folder:</b>
+				<button #outDir (click)="getOutDir(film)">Set Output Directory</button>
+				<b>{{film.outDir}}</b>
+			</div>
+			<button #clipGen (click)="createClip(film)">Add to Clip Queue</button>
 		</div>
-		<div class="streams">
-			<b>Video Streams:</b>
-			<select #videoStream (change)="setVideoStream(videoStream.value, film)">
-				<option *ngFor="let stream of film.vStreams; index as i" value="{{i}}">{{stream}}</option>
-			</select>
-			<br>
-			<b>Audio Streams:</b>
-			<select #audioStream (change)="setAudioStream(audioStream.value, film)">
-				<option value="" selected disabled hidden>Choose Audio Stream</option>
-				<option *ngFor="let stream of film.aStreams; index as i" value="{{i}}">{{stream}}</option>
-				<option value="no-audio">No Audio</option>
-			</select>
-			<br>
-			<b>Subtitle Streams:</b>
-			<select #subStream (change)="setSubStream(subStream.value, film)">
-				<option value="" selected disabled hidden>Choose Subtitle Stream</option>
-				<option value="no-sub">No Subtitles</option>
-				<option *ngFor="let stream of film.sStreams; index as i" value="{{i}}">{{stream}}</option>
-				<option *ngFor="let sub of film.extSubs; index as i" value="ext-{{i}}">{{sub}}</option>
-			</select>
-		</div>
-		<div class="start">
-			<b>Clip Start: </b>
-			<input #start type="text" class="inputBox" value="{{film.start}}" (keyup)="setStart(start.value, film)">
-		</div>
-		<div class="duration">
-			<b>Clip Duration: </b>
-			<input #dur type="text" class="inputBox" value="{{film.dur}}" (keyup)="setDur(dur.value, film)">
-		</div>
-		<div class="ext">
-			<b>Extension Choice</b>
-			<input #mp4 type="checkbox" name="ext" value="mp4" [checked]="film.ext['mp4']" (change)="setExt($event, mp4.value, film)">
-			<label for="mp4">mp4</label>
-			<input #mkv type="checkbox" name="ext" value="mkv" [checked]="film.ext['mkv']" (change)="setExt($event, mkv.value, film)">
-			<label for="mkv">mkv</label>
-			<input #mov type="checkbox" name="ext" value="mov" [checked]="film.ext['mov']" (change)="setExt($event, mov.value, film)">
-			<label for="mov">mov</label>
-			<input #gif type="checkbox" name="ext" value="gif" [checked]="film.ext['gif']" (change)="setExt($event, gif.value, film)">
-			<label for="gif">gif</label>
-			<input #webm type="checkbox" name="ext" value="webm" [checked]="film.ext['webm']" (change)="setExt($event, webm.value, film)">
-			<label for="webm">webm</label>
-		</div>
-		<ng-container *ngIf="film.ext['webm']">
-			<b>Bitrate in MB: </b>
-			<input #bitrate type="number" value="{{film.bitrate}}" step="0.5" min="0" (change)="setBitrate(bitrate.value, film)">
-		</ng-container>
-		<ng-container *ngIf="film.ext['gif']">
-			<b>Framerate: </b>
-			<input #framerate type="number" value="{{film.framerate}}" min="0" (change)="setFramerate(framerate.value, film)">
-		</ng-container>
-		<div class="quality">
-			<b>Quality Level</b>
-			<input #crf type="range" min="1" max="100" value="{{film.crf}}" (change)="setCrf(crf.value, film)"> Value: {{film.crf}} 
-		</div>
-		<div class="crop">
-			<b>Crop:</b>
-			<input #cropW type="number" class="cropBox" value="{{film.cropW}}" step="2" min="2" 
-												    max="{{film.width}}" (change)="setWidth(cropW.value, film)">
-			X
-			<input #cropH type="number" class="cropBox" value="{{film.cropH}}" step="2" min="2" 
-												    max="{{film.height}}" (change)="setHeight(cropH.value, film)">
-		</div>
-		<div class="scale">
-			<b>Scale Width:</b>
-			<input #scale type="number" class="scaleBox" value="{{film.scale}}" step="2" min="2" 
-												     max="{{film.cropW}}" (change)="setScale(scale.value, film)">
-		</div>
-		<div class="name">
-			<b>Clip Name:</b>
-			<input #clipName type="text" class="inputBox" value="{{film.clipName}}" (keyup)="setClipName(clipName.value, film)">
-		</div>
-		<div class="outdir">
-			<b>Output Folder:</b>
-			<button #outDir (click)="getOutDir(film)">Set Output Directory</button>
-			<b>{{film.outDir}}</b>
-		</div>
-		<button #clipGen (click)="createClip(film)">Add to Clip Queue</button>
 	</ng-container>
-</div>
+</ng-container>

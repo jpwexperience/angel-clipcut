@@ -35,9 +35,9 @@ export class ClipQueueComponent implements OnInit {
 	runCommand(clip): void {	
 		clip.running = true;
 		if(clip.palCommand.length == 0){
-			createClip(clip, this.clipFinished);
+			createClip(clip, this.clipFinished, this.progUpdate);
 		} else {
-			createGif(clip, this.clipFinished);
+			createGif(clip, this.clipFinished, this.progUpdate);
 		}
 	}
 
@@ -55,6 +55,11 @@ export class ClipQueueComponent implements OnInit {
 		console.log('---CLIP IS FINISHED---');
 		clip.running = false;
 		clip.complete = true;
+		this.changeDetectorRef.detectChanges();
+	}
+
+	progUpdate = (clip, value) => {
+		clip.percentage = value;
 		this.changeDetectorRef.detectChanges();
 	}
 

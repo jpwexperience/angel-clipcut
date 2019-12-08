@@ -3,15 +3,19 @@
 	<ng-container *ngIf="clip.running">
 		<div class="processing"><p>
 		<b>Processing Clip, this can take a while</b>
-		<span><b>.</b></span><span><b>.</b></span><span><b>.</b></span>
-			</p></div>
+		<span><b>.</b></span><span><b>.</b></span><span><b>.</b></span></p></div>
+			<!--<div #progBar class="progBar">{{clip.percentage}}%</div>-->
+			<progress max="100" value="{{clip.percentage}}"></progress>
 	</ng-container>
 	<ng-container *ngIf="clip.complete">
 		<p>Clip Finished</p>
 	</ng-container>
 	<div class="row">
-		<div class="col">
+		<div *ngIf="!clip.complete" class="col">
 			<button class="button" (click)="runCommand(clip)">Run Command</button>
+		</div>
+		<div *ngIf="clip.complete" class="col">
+			<button class="button" (click)="openClip(clip)">Show Clip in Folder</button>
 		</div>
 		<div class="col">
 			<button class="button" (click)="removeClip(clip)">Remove Clip</button>
@@ -19,10 +23,6 @@
 		<div class="col">
 			<button class="button" (click)="logClip(clip)">Log Clip</button>
 		</div>
-		<ng-container *ngIf="clip.complete">
-			<div class="col">
-				<button class="button" (click)="openClip(clip)">Show Clip in Folder</button>
-			</div>
-		</ng-container>
+
 	</div>
 </div>
