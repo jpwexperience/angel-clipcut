@@ -3,4 +3,59 @@
 .form {
 	background-color: $background-light;
 	@include border;
+	@include bigBox;
+	padding-top: 10px;
+}
+
+.row {
+	display: grid;
+        grid-template-columns: 1fr 1fr;
+        object-fit: cover;
+        text-align: left;
+        grid-gap: 10px;
+        margin-bottom: 10px;
+}
+
+.extRow {
+	display: grid;
+        grid-template-columns: 70px 70px;
+        object-fit: cover;
+        text-align: left;
+        grid-gap: 10px;
+        margin-bottom: 10px;
+}
+
+
+.streams {
+	overflow: hidden;
+}
+
+.button {
+	background-color: $background-dark;
+	@include border;
+	@include txtShadow;
+	@include smallBox;
+	cursor: pointer;
+	font-weight: 500;
+	font-size: 10pt;
+	height: 35px;
+}
+
+.inputBox {
+	@include border;
+	@include smallBox;
+	background: $background-dark;
+	color: white;
+}
+
+.check {
+	margin-right: 2px;
+}
+
+.spacing {
+	margin-top: 10px;
+}
+
+.full {
+	width: 90%;
 }

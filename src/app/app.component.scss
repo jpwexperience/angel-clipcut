@@ -1,5 +1,9 @@
 @import "src/assets/scss/colors.scss";
 @import "src/assets/scss/mixins.scss";
+.header {
+	display: inline-block;
+}
+
 .row {
 	display: grid;
 	grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
@@ -14,6 +18,7 @@
 
 .controller, .column {
 	@include border;
+	@include bigBox;
 }
 
 .controller, .column {
@@ -24,4 +29,16 @@
 	@include txtShadow;
 	font-weight: 700;
 	font-size: 16pt;
+}
+
+.fileUp {
+        background-color: $background-light;
+	@include txtShadow;
+	@include border;
+	border-width: 3px;
+	cursor: pointer;
+	outline: none;
+	margin-left: 20px;
+	padding: 6px 6px 6px 6px;
+	font-size: 12pt;
 }

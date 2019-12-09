@@ -1,10 +1,7 @@
-<div class="buttons">
-	<!-- <input class="inFiles" type="File" id="upFile" multiple size="50" onchange="fileUp()"> -->
-	<label for="file">Choose File</label>
-	<input type="file" id="file" multiple (change)="fileUp($event.target.files)">
-</div>
 <div class="controller" id="controller">
-	<h2 class="title">Video Controller</h2>
+	<h2 class="title header">Clip Controller</h2>
+	<input type="file" id="file" style="display: none;" multiple (change)="fileUp($event.target.files)">
+	<input type="button" class="fileUp header" value="Select Video Files" onclick="document.getElementById('file').click();" />
 	<app-form></app-form>
 </div>
 <div class="row">

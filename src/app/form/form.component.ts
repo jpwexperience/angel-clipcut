@@ -93,7 +93,25 @@ export class FormComponent implements OnInit {
 		film.sChoice = value;
 	}
 
-	createClip(film): void {
-		this.clipInitService.create(film);
+	createClip(film, start, dur): void {
+		let stampReg = /^(([1-5]?[0-9]|[0][0-9]):){1,2}(([1-5]?[0-9]|[0][0-9])(\.[0-9]+)?)$|^([0-9]+(\.[0-9]{1,3})?)$/;
+		let startMatch = start.value.match(stampReg); 
+		let durMatch = dur.value.match(stampReg); 
+		let inputErr = false;
+		if(!startMatch){
+			console.log('Bad Start Input: ' + start.value);
+			start.value = "Bad Starting Time Input";
+			inputErr = true;
+		}
+		if(!durMatch){
+			console.log('Bad Duration Input: ' + dur.value);
+			dur.value = "Bad Duration Input";
+			inputErr = true
+		}
+		if(inputErr){
+			return
+		} else{
+			this.clipInitService.create(film);
+		}
 	}
 }
