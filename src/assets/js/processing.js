@@ -148,10 +148,10 @@ function progUpdate(line, duration){
 }
 
 function getMpvEvent(line, film, playerUpdate) {
-        var startReg=/.*Ctrl\+R.*/;
-        var endReg=/.*Ctrl\+T.*/;
+        var startReg=/.*Ctrl\+Q.*/;
+        var endReg=/.*Ctrl\+W.*/;
         var id = film.id;
-        var createReg=/.*Ctrl\+Y.*/;
+        var createReg=/.*Ctrl\+E.*/;
         if (line.match(startReg)){
                 //console.log('Set Start');
 		playerUpdate(film, "start");
