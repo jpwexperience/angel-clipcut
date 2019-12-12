@@ -19,6 +19,7 @@ export class Film {
 	vChoice = "0";
 	aChoice = "0";
 	sChoice = "no-sub";
+	playing = 0;
 	constructor(
 		public filePath: string, 
 		public name: string,

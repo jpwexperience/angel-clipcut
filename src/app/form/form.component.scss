@@ -7,13 +7,17 @@
 	padding-top: 10px;
 }
 
-.row {
+.row, .bottomRow {
 	display: grid;
         grid-template-columns: 1fr 1fr;
         object-fit: cover;
         text-align: left;
         grid-gap: 10px;
         margin-bottom: 10px;
+}
+
+.bottomRow {
+	grid-template-columns: 1fr 1fr 1fr;
 }
 
 .extRow {

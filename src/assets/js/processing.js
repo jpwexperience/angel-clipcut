@@ -1,5 +1,6 @@
 const path = require('path');
 const fs = require('fs');
+const os = require('os');
 const {dialog} = require('electron').remote;
 const spawn = require('child_process').spawn;
 const {shell} = require('electron');
@@ -144,4 +145,63 @@ function progUpdate(line, duration){
 		return percentDone;
         }
         return 0;
+}
+
+function getMpvEvent(line, film, playerUpdate) {
+        var startReg=/.*Ctrl\+R.*/;
+        var endReg=/.*Ctrl\+T.*/;
+        var id = film.id;
+        var createReg=/.*Ctrl\+Y.*/;
+        if (line.match(startReg)){
+                //console.log('Set Start');
+		playerUpdate(film, "start");
+        }
+        if (line.match(endReg)){
+                //console.log('Set Duration');
+		playerUpdate(film, "duration");
+        }
+        if (line.match(createReg)){
+		//console.log('Create Clip and Run');
+		playerUpdate(film, "create");
+        }
+}
+
+function getStamp(line, film) {
+        let spaceSplit = line.split(' ');
+        let totSeconds = timecodeToSec(spaceSplit[1]);
+        if (totSeconds.toString() != 'NaN'){
+                film.playing = totSeconds;
+        }
+        console.log(' Timecode: ' + spaceSplit[1] + ' Seconds: ' + film.playing);
+}
+
+//Opens MPV and plays selected video file
+function playVideo(film, playerUpdate) {
+	console.log(os.platform);
+	let mpvPath = "";
+	let osPlatform = os.platform;
+	if(osPlatform == "darwin"){
+		mpvPath = "/usr/local/bin/mpv";
+	} else {
+		mpvPath = "/usr/bin/mpv";
+	} 
+	const mpvPlay = spawn(mpvPath, 
+		['--osd-fractions', film.filePath]);
+        mpvPlay.stderr.on('data', (data) => {
+		//console.log(`${data}`);
+                getStamp(data.toString(), film);
+        });
+
+        mpvPlay.stdout.on('data', (data) => {
+		console.log(`${data}`);
+                getMpvEvent(data.toString(), film, playerUpdate);
+        });
+
+        mpvPlay.on('close', (code) => {
+                console.log('mpv has been closed');
+        });
+
+        mpvPlay.on('error', (err) => {
+                console.log('MPV Err: ' + err);
+        });
 }

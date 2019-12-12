@@ -11,7 +11,7 @@ export class ClipInitService {
 	constructor(private clipListService: ClipListService,
 		private commandGenerateService: CommandGenerateService) { }
 
-	create(film): void {
+	create(film): Clip {
 		for (const ext in film.ext){
 			if(film.ext[ext]){
 				if(ext == "gif"){
@@ -21,11 +21,13 @@ export class ClipInitService {
 					newClip.palCommand = this.commandGenerateService.palGenerate(film);
 					newClip.gifCommand = this.commandGenerateService.gifGenerate(film);
 					this.clipListService.addClip(newClip);
+					return newClip;
 				} else {
 					let clipName = film.clipName + '.' + ext;
 					let command = this.commandGenerateService.generate(film, ext);
 					let newClip = new Clip(clipName, command);
 					this.clipListService.addClip(newClip);
+					return newClip;
 				}
 			}
 		}

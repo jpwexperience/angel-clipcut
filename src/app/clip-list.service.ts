@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, ChangeDetectorRef } from '@angular/core';
 import { Clip } from './models/clip';
 import { Observable, of } from 'rxjs';
 
@@ -6,8 +6,10 @@ import { Observable, of } from 'rxjs';
 	providedIn: 'root'
 })
 export class ClipListService {
+	changeDetectorRef: ChangeDetectorRef
 	private CLIPS: Clip[] = [];
-	constructor() { }
+
+	constructor() {}
 
 	getClips(): Observable<Clip[]> {
 		return of(this.CLIPS);

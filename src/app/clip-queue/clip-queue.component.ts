@@ -16,7 +16,8 @@ export class ClipQueueComponent implements OnInit {
 
 	clips: Clip[];
 
-	constructor(private clipListService: ClipListService,changeDetectorRef: ChangeDetectorRef) {
+	constructor(private clipListService: ClipListService,
+		changeDetectorRef: ChangeDetectorRef) {
 		this.changeDetectorRef = changeDetectorRef;
 	}
 

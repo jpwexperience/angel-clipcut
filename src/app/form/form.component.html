@@ -101,13 +101,18 @@
 					</div>
 				</div>
 
-				<div class="row">
+				<div class="bottomRow">
 					<div class="cloumn">
 						<button #clipGen (click)="createClip(film, starting, dur)" class="button">Add to Clip Queue</button>
 					</div>
 					<div class="column">
 						<div class="outdir">
 							<button #outDir (click)="getOutDir(film)" class="button">Set Output Directory</button>
+						</div>
+					</div>
+					<div class="column">
+						<div class="outdir">
+							<button #outDir (click)="playVid(film)" class="button">Play Video</button>
 						</div>
 					</div>
 				</div>

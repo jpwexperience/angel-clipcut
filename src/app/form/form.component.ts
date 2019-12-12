@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { Observable } from 'rxjs';
 import { FilmListService } from '../film-list.service';
 import { ClipInitService } from '../clip-init.service';
 import { Film } from '../models/film';
 declare var filmDir: any;
+declare var playVideo: any;
 
 @Component({
 	selector: 'app-form',
@@ -11,12 +12,16 @@ declare var filmDir: any;
 	styleUrls: ['./form.component.scss']
 })
 export class FormComponent implements OnInit {
+	changeDetectorRef: ChangeDetectorRef
 	films: Film[];
 
 	constructor(
 		private filmListService: FilmListService,
-		private clipInitService: ClipInitService
-		) {}
+		private clipInitService: ClipInitService,
+		changeDetectorRef: ChangeDetectorRef
+	) {
+		this.changeDetectorRef = changeDetectorRef;
+	}
 
 	ngOnInit() {
 		this.getFilms();
@@ -91,6 +96,28 @@ export class FormComponent implements OnInit {
 
 	setSubStream(value, film): void {
 		film.sChoice = value;
+	}
+
+	playVid(film): void {
+		playVideo(film, this.playerUpdate);
+	}
+
+	playerUpdate = (film, option) => {
+		if(option == "start"){
+			film.start = film.playing.toString();
+		} else if(option == "duration"){
+			if(film.playing >= film.start){
+				film.dur = (film.playing - film.start).toFixed(3).toString();
+			} else{
+				let tempTime = film.start;
+				film.start = film.playing.toString();
+				film.dur = (tempTime - film.start).toFixed(3).toString();
+			}
+		} else{
+			let newClip = this.clipInitService.create(film);
+			console.log(newClip);
+		}
+		this.changeDetectorRef.detectChanges();
 	}
 
 	createClip(film, start, dur): void {
