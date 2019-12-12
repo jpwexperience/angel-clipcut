@@ -114,8 +114,7 @@ export class FormComponent implements OnInit {
 				film.dur = (tempTime - film.start).toFixed(3).toString();
 			}
 		} else{
-			let newClip = this.clipInitService.create(film);
-			console.log(newClip);
+			this.clipInitService.create(film);
 		}
 		this.changeDetectorRef.detectChanges();
 	}

@@ -23,6 +23,7 @@ export class ClipQueueComponent implements OnInit {
 
 	ngOnInit() {
 		this.getClips();
+		this.clipListService.clipsUpdate(this.detectChanges.bind(this));
 	}
 
 	getClips(): void {
@@ -50,18 +51,21 @@ export class ClipQueueComponent implements OnInit {
 		console.log(clip);
 	}
 
+	detectChanges(): void {
+		this.changeDetectorRef.detectChanges();
+	}
+	
 	//Use fat arrow function to use changeDetectorRef 
 	//since it wouldn't be found otherwise
 	clipFinished = (clip) => {
-		console.log('---CLIP IS FINISHED---');
 		clip.running = false;
 		clip.complete = true;
-		this.changeDetectorRef.detectChanges();
+		this.detectChanges();
 	}
 
 	progUpdate = (clip, value) => {
 		clip.percentage = value;
-		this.changeDetectorRef.detectChanges();
+		this.detectChanges();
 	}
 
 }
