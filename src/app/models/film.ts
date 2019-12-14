@@ -20,6 +20,7 @@ export class Film {
 	aChoice = "0";
 	sChoice = "no-sub";
 	playing = 0;
+	stamps = [0, 0];
 	constructor(
 		public filePath: string, 
 		public name: string,

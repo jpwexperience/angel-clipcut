@@ -51,6 +51,9 @@ export class FormComponent implements OnInit {
 	}
 
 	setWidth(value, film): void {
+		if(film.scale > value){
+			film.scale = value;
+		}
 		film.cropW = value;
 	}
 
@@ -106,14 +109,18 @@ export class FormComponent implements OnInit {
 
 	playerUpdate = (film, option) => {
 		if(option == "start"){
+			film.stamps[0] = film.playing;
 			film.start = film.playing.toString();
 		} else if(option == "duration"){
-			if(film.playing >= film.start){
-				film.dur = (film.playing - film.start).toFixed(3).toString();
+			if(film.playing >= film.stamps[0]){
+				film.stamps[1] = film.playing;
+				film.dur = (film.playing - film.stamps[0]).toFixed(3).toString();
 			} else{
-				let tempTime = film.start;
+				let tempTime = film.stamps[0];
+				film.stamps[0] = film.playing;
+				film.stamps[1] = tempTime;
 				film.start = film.playing.toString();
-				film.dur = (tempTime - film.start).toFixed(3).toString();
+				film.dur = (tempTime - film.stamps[0]).toFixed(3).toString();
 			}
 		} else{
 			let newClips = this.clipInitService.create(film);

@@ -43,6 +43,7 @@ export class CommandGenerateService {
 		let aFilter = ['-c:a', acodec];
 		let bitrate = ["-b:v", film.bitrate + "M"];
 		let crf = ['-crf', film.crf];
+		let cropScale = ['-vf', 'crop=' + film.cropW + ':' + film.cropH + ', scale=' + film.scale + ':-1'];
 		let outFile = film.outDir + "/" + film.clipName + "." + extension;
 		if(film.sChoice != "no-sub"){
 			let fastSubReg = /.*(pgs|PGS|dvd_subtitle).*/;
@@ -61,7 +62,8 @@ export class CommandGenerateService {
 						'[0:s:' + film.sChoice + ']scale=' + film.cropW + ':' + film.cropH + '[sub]; ' +
 						'[c][sub]overlay[s];' +  ' [s]scale=' + film.scale + ':-1[v]', '-map', '[v]');
 				} else{
-					subtitleArr.push('-vf', 'subtitles=' + film.filePath + ':si=' + film.sChoice);
+					subtitleArr.push('-vf', 'crop=' + film.cropW + ':' + film.cropH + ', subtitles=\'' +
+						film.filePath + ':si=' + film.sChoice + '\'' + ', scale=' + film.scale + ':-1');
 				}
 			}
 		}
@@ -80,6 +82,7 @@ export class CommandGenerateService {
 			commandArr = commandArr.concat(subtitleArr);
 		} else {
 			commandArr = commandArr.concat(vMap);
+			commandArr = commandArr.concat(cropScale);
 		}
 		commandArr = commandArr.concat(vFilter);
 		if(film.aChoice == "no-audio"){

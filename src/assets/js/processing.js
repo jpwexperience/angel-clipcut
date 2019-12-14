@@ -43,6 +43,21 @@ function filmDir(film, callBack){
 	})
 }
 
+function fileCheck(film, ext){
+	let clipPath = film.outDir + '/' + film.clipName;
+	let badname = true;
+	while (badname){
+		let tempPath = clipPath + '.' + ext;
+		if (fs.existsSync(tempPath)) {
+			clipPath += '_' + timecodeToSec(film.start) + '-' + timecodeToSec(film.dur);
+		} else {
+			badname = false;
+		}
+	}
+	clipPath += '.' + ext;
+	return path.basename(clipPath, path.extname(clipPath));
+}
+
 function createClip(clip, finished, clipUpdate){
 	let duration = timecodeToSec(clip.command[clip.command.findIndex(element => element === '-t') + 1]);
 	const ffCmd = spawn(ffmpeg.path, clip.command);

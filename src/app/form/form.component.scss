@@ -1,5 +1,10 @@
 @import "src/assets/scss/colors.scss";
 @import "src/assets/scss/mixins.scss";
+
+option {
+	background-color: orange;
+}
+
 .form {
 	background-color: $background-light;
 	@include border;
