@@ -2,6 +2,7 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { Observable } from 'rxjs';
 import { FilmListService } from '../film-list.service';
 import { ClipInitService } from '../clip-init.service';
+import { ClipListService } from '../clip-list.service';
 import { Film } from '../models/film';
 declare var filmDir: any;
 declare var playVideo: any;
@@ -18,6 +19,7 @@ export class FormComponent implements OnInit {
 	constructor(
 		private filmListService: FilmListService,
 		private clipInitService: ClipInitService,
+		private clipListService: ClipListService,
 		changeDetectorRef: ChangeDetectorRef
 	) {
 		this.changeDetectorRef = changeDetectorRef;
@@ -114,7 +116,10 @@ export class FormComponent implements OnInit {
 				film.dur = (tempTime - film.start).toFixed(3).toString();
 			}
 		} else{
-			this.clipInitService.create(film);
+			let newClips = this.clipInitService.create(film);
+			for (var i = 0; i < newClips.length; i++){
+				this.clipListService.runCommand(newClips[i]);
+			}
 		}
 		this.changeDetectorRef.detectChanges();
 	}

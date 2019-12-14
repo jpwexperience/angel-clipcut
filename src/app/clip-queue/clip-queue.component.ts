@@ -2,8 +2,6 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { ClipListService } from '../clip-list.service';
 import { Clip } from '../models/clip';
 
-declare var createClip: any;
-declare var createGif: any;
 declare var openFile: any;
 
 @Component({
@@ -35,12 +33,7 @@ export class ClipQueueComponent implements OnInit {
 	}
 
 	runCommand(clip): void {	
-		clip.running = true;
-		if(clip.palCommand.length == 0){
-			createClip(clip, this.clipFinished, this.progUpdate);
-		} else {
-			createGif(clip, this.clipFinished, this.progUpdate);
-		}
+		this.clipListService.runCommand(clip);
 	}
 
 	openClip(clip): void {
@@ -55,19 +48,4 @@ export class ClipQueueComponent implements OnInit {
 		this.changeDetectorRef.detectChanges();
 	}
 	
-	//Use fat arrow function to use changeDetectorRef 
-	//since it wouldn't be found otherwise
-	clipFinished = (clip) => {
-		clip.running = false;
-		clip.complete = true;
-		this.detectChanges();
-	}
-
-	progUpdate = (clip, value) => {
-		clip.percentage = value;
-		this.detectChanges();
-	}
-
 }
-
-

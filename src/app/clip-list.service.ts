@@ -2,6 +2,9 @@ import { Injectable } from '@angular/core';
 import { Clip } from './models/clip';
 import { Observable, of } from 'rxjs';
 
+declare var createClip: any;
+declare var createGif: any;
+
 @Injectable({
 	providedIn: 'root'
 })
@@ -12,6 +15,10 @@ export class ClipListService {
 	constructor() {}
 
 	clipsUpdate(fn: () => void){
+		this.detectChanges = fn;
+	}
+
+	clipGen(fn: () => void){
 		this.detectChanges = fn;
 	}
 
@@ -31,6 +38,27 @@ export class ClipListService {
 	removeClip(clip): void {
 		let rmClip = this.findClip(clip);
 		this.CLIPS.splice(this.CLIPS.indexOf(rmClip), 1);
+		this.detectChanges();
+	}
+	
+	runCommand(clip): void {
+		clip.running = true;
+		if(clip.palCommand.length == 0){
+			createClip(clip, this.clipFinished, this.progUpdate);
+		} else {
+			createGif(clip, this.clipFinished, this.progUpdate);
+		}
+	}
+
+	//Need arrow function so detectChanges can be accessed
+	clipFinished = (clip) => {
+		clip.running = false;
+		clip.complete = true;
+		this.detectChanges();
+	}
+
+	progUpdate = (clip, value) => {
+		clip.percentage = value;
 		this.detectChanges();
 	}
 }
