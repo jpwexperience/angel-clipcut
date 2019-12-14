@@ -8,7 +8,7 @@ export class CommandGenerateService {
 	constructor() { }
 
 	palGenerate(film): string[] {
-		let outFile = film.outDir + "/" + film.clipName + ".mp4";
+		let outFile = film.outDir + "/" + film.clipName + "-gifTemp.mp4";
 		let palFile = film.outDir + "/" + film.clipName + "-pal.png";
 		let palCommand = ["-y", "-i", outFile, "-vf", "fps=" + film.framerate + 
 			",scale=" + film.scale + ":-1:flags=lanczos,palettegen", palFile];
@@ -16,7 +16,7 @@ export class CommandGenerateService {
 	}
 
 	gifGenerate(film): string[] {
-		let outFile = film.outDir + "/" + film.clipName + ".mp4";
+		let outFile = film.outDir + "/" + film.clipName + "-gifTemp.mp4";
 		let palFile = film.outDir + "/" + film.clipName + "-pal.png";
 		let gifFile = film.outDir + "/" + film.clipName + ".gif"
 		let gifCommand = ["-y", "-i", outFile, "-i", palFile, "-filter_complex", "fps=" + film.framerate +
@@ -44,7 +44,12 @@ export class CommandGenerateService {
 		let bitrate = ["-b:v", film.bitrate + "M"];
 		let crf = ['-crf', film.crf];
 		let cropScale = ['-vf', 'crop=' + film.cropW + ':' + film.cropH + ', scale=' + film.scale + ':-1'];
-		let outFile = film.outDir + "/" + film.clipName + "." + extension;
+		let outFile = film.outDir + "/" + film.clipName;
+		if(extension == "gif"){
+			outFile += '-gifTemp.mp4';
+		} else {
+			outFile += '.' + extension;
+		}
 		if(film.sChoice != "no-sub"){
 			let fastSubReg = /.*(pgs|PGS|dvd_subtitle).*/;
 			let extSubReg = /ext-.*/;

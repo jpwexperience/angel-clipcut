@@ -141,8 +141,11 @@ function timecodeToSec(time){
 }
 
 function openFile(clip){
-	let filePath = clip.command[clip.command.length - 1];
-	shell.showItemInFolder(filePath);
+	if(clip.gifCommand.length == 0){
+		shell.showItemInFolder(clip.command[clip.command.length - 1]);
+	} else{
+		shell.showItemInFolder(clip.gifCommand[clip.gifCommand.length - 1]);
+	}
 }
 
 function progUpdate(line, duration){

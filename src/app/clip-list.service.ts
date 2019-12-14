@@ -4,6 +4,8 @@ import { Observable, of } from 'rxjs';
 
 declare var createClip: any;
 declare var createGif: any;
+declare var fileCheck: any;
+declare var timecodeToSec: any;
 
 @Injectable({
 	providedIn: 'root'
@@ -48,6 +50,25 @@ export class ClipListService {
 		} else {
 			createGif(clip, this.clipFinished, this.progUpdate);
 		}
+	}
+
+	nameCheck(film, ext): string {
+		let fileName = fileCheck(film, ext);
+		let badname = true;
+		let finalName = fileName;
+		while(badname){
+			let tempName = finalName + '.' + ext;
+			if(ext == "gif"){}
+			badname = false;
+			for(var i = 0; i < this.CLIPS.length; i++){
+				if(tempName == this.CLIPS[i].name){
+					finalName += '_' + timecodeToSec(film.start) + '-' + timecodeToSec(film.dur);	
+					badname = true;
+					break;
+				}
+			}
+		}
+		return finalName;
 	}
 
 	//Need arrow function so detectChanges can be accessed
