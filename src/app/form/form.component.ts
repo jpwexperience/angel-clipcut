@@ -132,6 +132,7 @@ export class FormComponent implements OnInit {
 	}
 
 	createClip(film, start, dur): void {
+		this.clipInitService.heightCheck(film);
 		let stampReg = /^(([1-5]?[0-9]|[0][0-9]):){1,2}(([1-5]?[0-9]|[0][0-9])(\.[0-9]+)?)$|^([0-9]+(\.[0-9]{1,3})?)$/;
 		let startMatch = start.value.match(stampReg); 
 		let durMatch = dur.value.match(stampReg); 

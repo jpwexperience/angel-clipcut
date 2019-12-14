@@ -11,6 +11,24 @@ export class ClipInitService {
 	constructor(private clipListService: ClipListService,
 		private commandGenerateService: CommandGenerateService) { }
 
+	heightCheck(film): void{
+			if (film.cropW % 2 != 0){
+				film.cropW--;
+			}
+			if (film.cropH % 2 != 0){
+				film.cropH--;
+			}
+			if (film.scale % 2 != 0){
+				film.scale--;
+			}
+			let finalHeight = Math.round((film.scale * film.cropH) / film.cropW);
+			console.log(film.cropW + 'x' + film.cropH + ' Scale: ' + film.scale);
+			while(finalHeight % 2 != 0){
+				film.scale -= 2;
+				finalHeight = Math.round((film.scale * film.cropH) / film.cropW);
+			}
+		}
+
 	create(film): Clip[] {
 		let clips = [];
 		for (const ext in film.ext){

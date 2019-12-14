@@ -4,33 +4,31 @@
 			<div class="filename">
 				<b>Filename: {{film.name}}</b>
 			</div>
-			<div class="streams">
-				<div class="spacing">
-					<b>Video Streams: </b>
-					<select #videoStream (change)="setVideoStream(videoStream.value, film)">
-						<option *ngFor="let stream of film.vStreams; index as i" value="{{i}}">{{stream}}</option>
-					</select>
-				</div>
-				<div class="spacing">
-					<b>Audio Streams: </b>
-					<select #audioStream (change)="setAudioStream(audioStream.value, film)">
-						<option value="" selected disabled hidden>Choose Audio Stream</option>
-						<option *ngFor="let stream of film.aStreams; index as i" value="{{i}}">{{stream}}</option>
-						<option value="no-audio">No Audio</option>
-					</select>
-				</div>
-				<div class="spacing">
-					<b>Subtitle Streams: </b>
-					<select #subStream (change)="setSubStream(subStream.value, film)">
-						<option value="" selected disabled hidden>Choose Subtitle Stream</option>
-						<option value="no-sub">No Subtitles</option>
-						<option *ngFor="let stream of film.sStreams; index as i" value="{{i}}">{{stream}}</option>
-						<option *ngFor="let sub of film.extSubs; index as i" value="ext-{{i}}">{{sub}}</option>
-					</select>
-				</div>
-			</div>
 			<div class="row">
 				<div class="column">
+					<div class="streams">
+						<div class="spacing">
+							<select #videoStream (change)="setVideoStream(videoStream.value, film)">
+								<option value="" selected disabled hidden>Choose Video Stream</option>
+								<option *ngFor="let stream of film.vStreams; index as i" value="{{i}}">{{stream}}</option>
+							</select>
+						</div>
+						<div class="spacing">
+							<select #audioStream (change)="setAudioStream(audioStream.value, film)">
+								<option value="" selected disabled hidden>Choose Audio Stream</option>
+								<option *ngFor="let stream of film.aStreams; index as i" value="{{i}}">{{stream}}</option>
+								<option value="no-audio">No Audio</option>
+							</select>
+						</div>
+						<div class="spacing">
+							<select #subStream (change)="setSubStream(subStream.value, film)">
+								<option value="" selected disabled hidden>Choose Subtitle Stream</option>
+								<option value="no-sub">No Subtitles</option>
+								<option *ngFor="let stream of film.sStreams; index as i" value="{{i}}">{{stream}}</option>
+								<option *ngFor="let sub of film.extSubs; index as i" value="ext-{{i}}">{{sub}}</option>
+							</select>
+						</div>
+					</div>
 					<div class="start spacing">
 						<b>Clip Start:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b>
 						<input #starting type="text" class="inputBox" value="{{film.start}}" (keyup)="setStart(starting.value, film)">
@@ -66,12 +64,9 @@
 							</div>
 						</div>
 					</div>
-					<div class="name spacing">
-						<b>Clip Name: </b>
-						<input #clipName type="text" class="inputBox full" value="{{film.clipName}}" (keyup)="setClipName(clipName.value, film)">
-					</div>
 				</div>
 				<div class="column">
+
 					<div class="crop spacing">
 						<b>Crop:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b>
 						<input #cropW type="number" class="inputBox" value="{{film.cropW}}" step="2" min="2" 
@@ -99,8 +94,12 @@
 						<input #framerate type="number" class="inputBox" 
 							value="{{film.framerate}}" min="0" (change)="setFramerate(framerate.value, film)">
 					</div>
+					<div class="name spacing">
+						<b>Clip Name: </b>
+						<input #clipName type="text" class="inputBox full" value="{{film.clipName}}" (keyup)="setClipName(clipName.value, film)">
+					</div>
 				</div>
-
+			</div>
 				<div class="bottomRow">
 					<div class="cloumn">
 						<button #clipGen (click)="createClip(film, starting, dur)" class="button">Add to Clip Queue</button>
@@ -116,7 +115,6 @@
 						</div>
 					</div>
 				</div>
-			</div>
 		</div>
 	</ng-container>
 </ng-container>
