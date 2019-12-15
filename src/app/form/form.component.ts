@@ -107,6 +107,14 @@ export class FormComponent implements OnInit {
 		playVideo(film, this.playerUpdate);
 	}
 
+	toggleErr(element, value): void {
+		let elemClass = element.classList[0];
+		if(elemClass == "errBox"){
+			element.setAttribute('class', 'inputBox');
+			element.value = value;
+		}
+	}
+
 	playerUpdate = (film, option) => {
 		if(option == "start"){
 			film.stamps[0] = film.playing;
@@ -139,11 +147,13 @@ export class FormComponent implements OnInit {
 		let inputErr = false;
 		if(!startMatch){
 			console.log('Bad Start Input: ' + start.value);
-			start.value = "Bad Starting Time Input";
+			start.setAttribute('class', 'errBox');
+			start.value = "Bad Start Input";
 			inputErr = true;
 		}
 		if(!durMatch){
 			console.log('Bad Duration Input: ' + dur.value);
+			dur.setAttribute('class', 'errBox');
 			dur.value = "Bad Duration Input";
 			inputErr = true
 		}

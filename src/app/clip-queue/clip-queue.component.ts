@@ -32,7 +32,9 @@ export class ClipQueueComponent implements OnInit {
 		this.clipListService.removeClip(clip);
 	}
 
-	runCommand(clip): void {	
+	runCommand(clip, button): void {	
+		button.setAttribute('disabled', 'true');
+		button.setAttribute('class', 'runClick');
 		this.clipListService.runCommand(clip);
 	}
 

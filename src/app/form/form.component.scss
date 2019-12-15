@@ -46,11 +46,16 @@
 	height: 35px;
 }
 
-.inputBox {
+.inputBox, .errBox {
 	@include border;
 	@include smallBox;
 	background: $background-dark;
 	color: white;
+	padding: 3px;
+}
+
+.errBox {
+	background-color: red;
 }
 
 .check {

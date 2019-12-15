@@ -10,15 +10,16 @@
 			</div>
 		</ng-container>
 		<ng-container *ngIf="clip.percentage > 0">
-			<progress max="100" value="{{clip.percentage}}"></progress>
+			<progress class="progBar" max="100" value="{{clip.percentage}}"></progress>
 		</ng-container>
 	</ng-container>
 	<ng-container *ngIf="clip.complete">
 		<p><b>Clip Finished</b></p>
 	</ng-container>
 	<div class="row">
+
 		<div *ngIf="!clip.complete" class="col">
-			<button class="button" (click)="runCommand(clip)">Run Command</button>
+			<button #cutting class="button" (click)="runCommand(clip, cutting)">Start Cutting</button>
 		</div>
 		<div *ngIf="clip.complete" class="col">
 			<button class="button" (click)="openClip(clip)">Show in Folder</button>

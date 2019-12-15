@@ -31,11 +31,13 @@
 					</div>
 					<div class="start spacing">
 						<b>Clip Start:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b>
-						<input #starting type="text" class="inputBox" value="{{film.start}}" (keyup)="setStart(starting.value, film)">
+						<input #starting type="text" class="inputBox" value="{{film.start}}" 
+						(keyup)="setStart(starting.value, film)" (click)="toggleErr(starting, '00:00:00.00')">
 					</div>
 					<div class="duration spacing">
 						<b>Clip Duration:&nbsp;&nbsp;</b>
-						<input #dur type="text" class="inputBox" value="{{film.dur}}" (keyup)="setDur(dur.value, film)">
+						<input #dur type="text" class="inputBox" value="{{film.dur}}" 
+						(keyup)="setDur(dur.value, film)" (click)="toggleErr(dur, '1:00')">
 					</div>
 					<div class="ext spacing">
 						<b>Extension Choice:</b><br>

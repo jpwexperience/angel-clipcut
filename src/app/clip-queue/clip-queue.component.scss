@@ -21,7 +21,7 @@
 	padding: 0px;
 }
 
-.button {
+.button, .runClick {
 	background-color: $background-dark;
 	@include border;
 	@include txtShadow;
@@ -30,6 +30,18 @@
 	font-weight: 500;
 	font-size: 10pt;
 	height: 35px;
+}
+
+.progBar {
+	@include border;
+	background: #2ba194;
+	width: 100%;
+	margin-bottom: 5px;
+}
+
+.runClick {
+	cursor: none;
+	background-color: #1b2532;
 }
 
 @keyframes blink {
