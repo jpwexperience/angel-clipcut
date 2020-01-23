@@ -35,6 +35,10 @@
 	overflow: auto;
 }
 
+.streams::-webkit-scrollbar {
+	display: none;
+}
+
 .button {
 	background-color: $background-dark;
 	@include border;

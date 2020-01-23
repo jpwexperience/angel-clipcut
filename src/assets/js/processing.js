@@ -4,11 +4,12 @@ const os = require('os');
 const {dialog} = require('electron').remote;
 const spawn = require('child_process').spawn;
 const {shell} = require('electron');
+const osPlatform = os.platform;
 var ffmpeg = require('ffmpeg-static');
 var windowsMpvPath = "";
 
 function ffprobe(filePath, sendOutput) {
-	let command = ffmpeg.path + " -hide_banner -i '" + filePath + "'";
+	let command = "\"" + ffmpeg.path + "\" -hide_banner -i \"" + filePath + "\"";
 	//Need to run synchronously to ffmpeg output is properly returned
 	let exec = require('child_process').execSync, child;
 	let extSubs = [];
@@ -45,6 +46,7 @@ function filmDir(film, callBack){
 }
 
 function fileCheck(film, ext){
+	//need search path for windows
 	let clipPath = film.outDir + '/' + film.clipName;
 	let badname = true;
 	while (badname){
@@ -141,6 +143,7 @@ function timecodeToSec(time){
 	}
 }
 
+//Need path for windows
 function openFile(clip){
 	if(clip.gifCommand.length == 0){
 		shell.showItemInFolder(clip.command[clip.command.length - 1]);
@@ -196,22 +199,20 @@ function getStamp(line, film) {
 
 //Opens MPV and plays selected video file
 function playVideo(film, playerUpdate) {
-	console.log(os.platform);
 	let mpvPath = "";
-	let osPlatform = os.platform;
 	let hasPathError = false;
 	if(osPlatform == "darwin"){
 		mpvPath = "/usr/local/bin/mpv";
 	} else if(osPlatform == "win32"){
 		if(windowsMpvPath.length == 0){
-			let userChoice = dialog.showMessageBox({
+			let userChoice = dialog.showMessageBoxSync({
 				type: 'error',
 				title: 'MPV Not Found',
 				buttons: ['cancel', 'ok'],
 				message: 'Select path to MPV executable'
 			});
 			if(userChoice != 0){
-				mpvPath = dialog.showOpenDialog({
+				mpvPath = dialog.showOpenDialogSync({
 					properties: ['openFile'],
 					title: 'Select MPV Executable (mpv.exe)',
 					filters: [{ name: 'Executables', extensions: ['exe'] }]
