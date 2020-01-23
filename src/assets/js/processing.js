@@ -5,6 +5,7 @@ const {dialog} = require('electron').remote;
 const spawn = require('child_process').spawn;
 const {shell} = require('electron');
 var ffmpeg = require('ffmpeg-static');
+var windowsMpvPath = "";
 
 function ffprobe(filePath, sendOutput) {
 	let command = ffmpeg.path + " -hide_banner -i '" + filePath + "'";
@@ -198,28 +199,62 @@ function playVideo(film, playerUpdate) {
 	console.log(os.platform);
 	let mpvPath = "";
 	let osPlatform = os.platform;
+	let hasPathError = false;
 	if(osPlatform == "darwin"){
 		mpvPath = "/usr/local/bin/mpv";
+	} else if(osPlatform == "win32"){
+		if(windowsMpvPath.length == 0){
+			let userChoice = dialog.showMessageBox({
+				type: 'error',
+				title: 'MPV Not Found',
+				buttons: ['cancel', 'ok'],
+				message: 'Select path to MPV executable'
+			});
+			if(userChoice != 0){
+				mpvPath = dialog.showOpenDialog({
+					properties: ['openFile'],
+					title: 'Select MPV Executable (mpv.exe)',
+					filters: [{ name: 'Executables', extensions: ['exe'] }]
+				});
+				if(mpvPath === undefined){
+					hasPathError = true;
+				} else if(path.basename(mpvPath[0]) !== "mpv.exe"){
+					let userChoice = dialog.showMessageBox({
+						type: 'error',
+						title: 'Incorrect',
+						message: mpvPath[0] + ' is not the MPV executable'
+					});
+					hasPathError = true;
+				} else{
+					mpvPath = mpvPath[0];
+					windowsMpvPath = mpvPath;
+				}
+			} else {
+				hasPathError = true;
+			}
+		} else {
+			mpvPath = windowsMpvPath;
+		}
 	} else {
 		mpvPath = "/usr/bin/mpv";
 	} 
-	const mpvPlay = spawn(mpvPath, 
-		['--osd-fractions', film.filePath]);
-        mpvPlay.stderr.on('data', (data) => {
-		//console.log(`${data}`);
-                getStamp(data.toString(), film);
-        });
+	if(!hasPathError){
+		const mpvPlay = spawn(mpvPath, 
+			['--osd-fractions', film.filePath]);
+		mpvPlay.stderr.on('data', (data) => {
+			getStamp(data.toString(), film);
+		});
+		mpvPlay.stdout.on('data', (data) => {
+			console.log(`${data}`);
+			getMpvEvent(data.toString(), film, playerUpdate);
+		});
 
-        mpvPlay.stdout.on('data', (data) => {
-		console.log(`${data}`);
-                getMpvEvent(data.toString(), film, playerUpdate);
-        });
+		mpvPlay.on('close', (code) => {
+			console.log('mpv has been closed');
+		});
 
-        mpvPlay.on('close', (code) => {
-                console.log('mpv has been closed');
-        });
-
-        mpvPlay.on('error', (err) => {
-                console.log('MPV Err: ' + err);
-        });
+		mpvPlay.on('error', (err) => {
+			console.log('MPV Err: ' + err);
+		});
+	}
 }
