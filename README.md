@@ -6,5 +6,5 @@ Reimplementation of <a href="https://github.com/jpwexperience/clipcut-gui" targe
 2. install dependencies with 'npm install' while in repository directory
 3. run 'npm run angel' in repository directory 
 
-## Things to Note
-The functionality for making the clips themselves is running. The style and input validation, specifically for the start time and duration time is still rough. 
+## Things to Note about Windows
+Functionality for using MPV requires locating the path of mpv.exe before usage. External subtitle files may not be recognized due to differences in file path styles. 
