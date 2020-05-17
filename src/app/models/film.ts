@@ -3,6 +3,7 @@ export class Film {
 	crf = 18;
 	start = "00:00:00.00";
 	dur = "1:00";
+	totalDur = 0;
 	ext = {
 		mp4: true,
 		mov: false,

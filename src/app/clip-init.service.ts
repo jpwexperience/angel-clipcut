@@ -11,7 +11,7 @@ export class ClipInitService {
 	constructor(private clipListService: ClipListService,
 		private commandGenerateService: CommandGenerateService) { }
 
-	heightCheck(film): void{
+	heightCheck(film): void {
 			if (film.cropW % 2 != 0){
 				film.cropW--;
 			}

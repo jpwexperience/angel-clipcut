@@ -88,6 +88,9 @@ export class FilmInitService {
 			extSubs,
 			width,
 			height);
+		if(newFilm.aStreams.length === 0) {
+			newFilm.aChoice = "no-audio";
+		}
 		this.filmListService.addFilm(newFilm);
 	}
 	

@@ -1,4 +1,5 @@
 const path = require('path');
+const { resolve } = require('path');
 const fs = require('fs');
 const os = require('os');
 const {dialog} = require('electron').remote;
@@ -117,6 +118,11 @@ function createGif(clip, finished, clipUpdate){
 
 }
 
+/**
+ * Converts timecode to seconds
+ * 
+ * @param {string} time 
+ */
 function timecodeToSec(time){
 	var durArr = time.split(':');
 	var milliString = time.split('.');
@@ -152,6 +158,13 @@ function openFile(clip){
 	}
 }
 
+/**
+ * Update status of clip duration
+ * 
+ * @param {string} line 
+ * @param {float} duration 
+ * 	clip duration
+ */
 function progUpdate(line, duration){
         var timeRegex = /time=[0-9][0-9]:[0-9][0-9]:[0-9][0-9][.][0-9]*/;
         var failRegex = /Conversion failed!/;
@@ -169,41 +182,58 @@ function progUpdate(line, duration){
         return 0;
 }
 
+/**
+ * Watch for mpv keyboard message
+ * 
+ * @param {string} line 
+ * @param {Film} film 
+ * @param {callBack} playerUpdate 
+ */
 function getMpvEvent(line, film, playerUpdate) {
         var startReg=/.*Ctrl\+Q.*/;
         var endReg=/.*Ctrl\+W.*/;
-        var id = film.id;
         var createReg=/.*Ctrl\+E.*/;
+        var id = film.id;
         if (line.match(startReg)){
-                //console.log('Set Start');
-		playerUpdate(film, "start");
+			playerUpdate(film, "start");
         }
         if (line.match(endReg)){
-                //console.log('Set Duration');
-		playerUpdate(film, "duration");
+			playerUpdate(film, "duration");
         }
         if (line.match(createReg)){
-		//console.log('Create Clip and Run');
-		playerUpdate(film, "create");
+			playerUpdate(film, "create");
         }
 }
 
-function getStamp(line, film) {
-        let spaceSplit = line.split(' ');
-        let totSeconds = timecodeToSec(spaceSplit[1]);
-        if (totSeconds.toString() != 'NaN'){
-                film.playing = totSeconds;
-        }
-        console.log(' Timecode: ' + spaceSplit[1] + ' Seconds: ' + film.playing);
+/**
+ * Extract and set current timestemp from mpv
+ * 
+ * @param {string} line 
+ * @param {Film} film 
+ */
+function updatePlayingStamp(line, film) {
+	let avSplitReg = /V:[^\/]+/;
+	let currTime = line.match(avSplitReg);
+	if (currTime) {
+		currTime = currTime[0].split(" ")[1];
+		let currSec = timecodeToSec(currTime);
+		film.playing = currSec;
+	}
 }
-
-//Opens MPV and plays selected video file
+/**
+ * Opens and plays video in mpv
+ * 
+ * @param {Film} film 
+ * @param {callBack} playerUpdate 
+ */
 function playVideo(film, playerUpdate) {
 	let mpvPath = "";
 	let hasPathError = false;
+	// Get mpv path based on OS
 	if(osPlatform == "darwin"){
 		mpvPath = "/usr/local/bin/mpv";
 	} else if(osPlatform == "win32"){
+		// Make user choose mpv path if none is present
 		if(windowsMpvPath.length == 0){
 			let userChoice = dialog.showMessageBoxSync({
 				type: 'error',
@@ -212,6 +242,7 @@ function playVideo(film, playerUpdate) {
 				message: 'Select path to MPV executable'
 			});
 			if(userChoice != 0){
+				// Select and save mpv path
 				mpvPath = dialog.showOpenDialogSync({
 					properties: ['openFile'],
 					title: 'Select MPV Executable (mpv.exe)',
@@ -243,15 +274,17 @@ function playVideo(film, playerUpdate) {
 		const mpvPlay = spawn(mpvPath, 
 			['--osd-fractions', film.filePath]);
 		mpvPlay.stderr.on('data', (data) => {
-			getStamp(data.toString(), film);
+			console.log(`${data}`);
+			// extract and set film timestamp
+			updatePlayingStamp(data.toString(), film);
 		});
 		mpvPlay.stdout.on('data', (data) => {
-			console.log(`${data}`);
+			// Trigger error for keyboard clicks
 			getMpvEvent(data.toString(), film, playerUpdate);
 		});
 
 		mpvPlay.on('close', (code) => {
-			console.log('mpv has been closed');
+			console.log(film.filePath + ' closed');
 		});
 
 		mpvPlay.on('error', (err) => {
