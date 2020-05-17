@@ -9,13 +9,19 @@ const osPlatform = os.platform;
 var ffmpeg = require('ffmpeg-static');
 var windowsMpvPath = "";
 
-function ffprobe(filePath, sendOutput) {
+/**
+ * Get input file information
+ * 
+ * @param {string} filePath
+ */
+function ffprobe(filePath) {
 	let command = "\"" + ffmpeg.path + "\" -hide_banner -i \"" + filePath + "\"";
 	//Need to run synchronously to ffmpeg output is properly returned
 	let exec = require('child_process').execSync, child;
 	let extSubs = [];
 	let dirpath = path.dirname(filePath);
 	let files = fs.readdirSync(dirpath);
+	//Extract subtitle paths from input directory
 	for (i = 0; i < files.length; i++){
 		var ext = files[i].split('.').pop();
 		if (ext === "srt" || ext === "ass"){
@@ -36,16 +42,28 @@ function ffprobe(filePath, sendOutput) {
 	return [ffOut, extSubs, path.basename(filePath), dirpath];
 }
 
-function filmDir(film, callBack){
+/**
+ * Select directory clips should output to
+ * 
+ * @param {Film} film 
+ * @param {callBack} dirSelect 
+ */
+function filmDir(film, dirSelect){
 	dialog.showOpenDialog( {
 		properties: ['openDirectory']
 	}).then(result => {
-		callBack(result.filePaths[0], film);
+		dirSelect(result.filePaths[0], film);
 	}).catch(err => {
 		console.log(err);
 	})
 }
 
+/**
+ * Check if a file is already present
+ * 
+ * @param {Film} film 
+ * @param {string} ext 
+ */
 function fileCheck(film, ext){
 	//need search path for windows
 	let clipPath = film.outDir + '/' + film.clipName;
@@ -62,6 +80,13 @@ function fileCheck(film, ext){
 	return path.basename(clipPath, path.extname(clipPath));
 }
 
+/**
+ * Creates a new clip
+ * 
+ * @param {Clip} clip 
+ * @param {callBack} finished 
+ * @param {callBack} clipUpdate 
+ */
 function createClip(clip, finished, clipUpdate){
 	let duration = timecodeToSec(clip.command[clip.command.findIndex(element => element === '-t') + 1]);
 	const ffCmd = spawn(ffmpeg.path, clip.command);
@@ -78,6 +103,13 @@ function createClip(clip, finished, clipUpdate){
 	});
 }
 
+/**
+ * Creates a new gif
+ * 
+ * @param {Clip} clip 
+ * @param {callBack} finished 
+ * @param {callBack} clipUpdate 
+ */
 function createGif(clip, finished, clipUpdate){
 	let duration = timecodeToSec(clip.command[clip.command.findIndex(element => element === '-t') + 1]);
 	const ffCmd = spawn(ffmpeg.path, clip.command);
@@ -274,7 +306,6 @@ function playVideo(film, playerUpdate) {
 		const mpvPlay = spawn(mpvPath, 
 			['--osd-fractions', film.filePath]);
 		mpvPlay.stderr.on('data', (data) => {
-			console.log(`${data}`);
 			// extract and set film timestamp
 			updatePlayingStamp(data.toString(), film);
 		});
