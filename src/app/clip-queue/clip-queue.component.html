@@ -13,8 +13,11 @@
 			<progress class="progBar" max="100" value="{{clip.percentage}}"></progress>
 		</ng-container>
 	</ng-container>
-	<ng-container *ngIf="clip.complete">
-		<p><b>Clip Finished</b></p>
+	<ng-container *ngIf="clip.complete !== -1 && clip.complete !== 0">
+		<p><b>Clip Finished {{clip.complete}}</b></p>
+	</ng-container>
+	<ng-container *ngIf="clip.complete === -1">
+		<p><b>Error Cutting Clip</b></p>
 	</ng-container>
 	<div class="row">
 
