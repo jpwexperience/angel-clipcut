@@ -131,6 +131,7 @@ export class FormComponent implements OnInit {
 				film.dur = (tempTime - film.stamps[0]).toFixed(3).toString();
 			}
 		} else{
+			this.clipInitService.heightCheck(film);
 			let newClips = this.clipInitService.create(film);
 			for (var i = 0; i < newClips.length; i++){
 				this.clipListService.runCommand(newClips[i]);

@@ -73,6 +73,7 @@ export class ClipListService {
 
 	//Need arrow function so detectChanges can be accessed
 	clipFinished = (clip, value) => {
+		console.log('clip finished, calue: ' + value);
 		clip.running = false;
 		clip.complete = value;
 		this.detectChanges();

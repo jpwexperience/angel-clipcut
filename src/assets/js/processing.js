@@ -90,13 +90,20 @@ function fileCheck(film, ext){
 function createClip(clip, finished, clipUpdate){
 	let duration = timecodeToSec(clip.command[clip.command.findIndex(element => element === '-t') + 1]);
 	const ffCmd = spawn(ffmpeg.path, clip.command);
+	let clipErr = 1;
 	ffCmd.stderr.on('data', (data) => {
 		console.log(`${data}`);
 		let update = progUpdate(data, duration);
+
+		// Error in cutting clip. Bad crop/scale size or bad stream selection
+		if(update === -2){
+			clipErr = -1;		
+		} 
+		
 		clipUpdate(clip, update);
 	});
 	ffCmd.on('close', (code) => {
-		finished(clip);
+		finished(clip, clipErr);
 	});
 	ffCmd.on('error', (err) => {
 		console.log('FFmpeg Command Issue: ' + err);
