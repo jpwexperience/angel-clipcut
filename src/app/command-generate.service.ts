@@ -11,7 +11,7 @@ export class CommandGenerateService {
 		let outFile = film.outDir + "/" + film.clipName + "-gifTemp.mp4";
 		let palFile = film.outDir + "/" + film.clipName + "-pal.png";
 		let palCommand = ["-y", "-i", outFile, "-vf", "fps=" + film.framerate + 
-			",scale=" + film.scale + ":-1:flags=lanczos,palettegen", palFile];
+			",scale=" + film.scale + ":-2:flags=lanczos,palettegen", palFile];
 		return palCommand;	
 	}
 
@@ -20,7 +20,7 @@ export class CommandGenerateService {
 		let palFile = film.outDir + "/" + film.clipName + "-pal.png";
 		let gifFile = film.outDir + "/" + film.clipName + ".gif"
 		let gifCommand = ["-y", "-i", outFile, "-i", palFile, "-filter_complex", "fps=" + film.framerate +
-			",scale=" + film.scale + ":-1:flags=lanczos[x];[x][1:v]paletteuse", gifFile];
+			",scale=" + film.scale + ":-2:flags=lanczos[x];[x][1:v]paletteuse", gifFile];
 		return gifCommand;
 	}
 
@@ -43,7 +43,7 @@ export class CommandGenerateService {
 		let aFilter = ['-c:a', acodec];
 		let bitrate = ["-b:v", film.bitrate + "M"];
 		let crf = ['-crf', film.crf];
-		let cropScale = ['-vf', 'crop=' + film.cropW + ':' + film.cropH + ', scale=' + film.scale + ':-1'];
+		let cropScale = ['-vf', 'crop=' + film.cropW + ':' + film.cropH + ', scale=' + film.scale + ':-2'];
 		let outFile = film.outDir + "/" + film.clipName;
 		if(extension == "gif"){
 			outFile += '-gifTemp.mp4';
@@ -58,17 +58,17 @@ export class CommandGenerateService {
 				let extChoice = extSplit[1];
 				console.log(extChoice);
 				subtitleArr.push('-vf', 'crop=' + film.cropW + ':' + film.cropH + ', subtitles=\'' +
-					film.extSubs[extChoice] + '\'' + ', scale=' + film.scale + ':-1');
+					film.extSubs[extChoice] + '\'' + ', scale=' + film.scale + ':-2');
 			} else {
 				if (fastSubReg.test(film.sStreams[film.sChoice])){
 					fastSub = true;
 					subtitleArr.push('-filter_complex',
 						'[0:v:' + film.vChoice + ']crop=' + film.cropW + ':' + film.cropH + '[c]; ' +
 						'[0:s:' + film.sChoice + ']scale=' + film.cropW + ':' + film.cropH + '[sub]; ' +
-						'[c][sub]overlay[s];' +  ' [s]scale=' + film.scale + ':-1[v]', '-map', '[v]');
+						'[c][sub]overlay[s];' +  ' [s]scale=' + film.scale + ':-2[v]', '-map', '[v]');
 				} else{
 					subtitleArr.push('-vf', 'crop=' + film.cropW + ':' + film.cropH + ', subtitles=\'' +
-						film.filePath + ':si=' + film.sChoice + '\'' + ', scale=' + film.scale + ':-1');
+						film.filePath + ':si=' + film.sChoice + '\'' + ', scale=' + film.scale + ':-2');
 				}
 			}
 		}
