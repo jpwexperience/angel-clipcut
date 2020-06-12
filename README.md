@@ -34,7 +34,6 @@ If you have mpv installed on your machine you can create clips while it plays in
 Subrip and picture based subtitle streams will be extracted from the video file and search the directory for external subtitle files. Picture based subtitles will be scaled along with the video.
 
 ## Codecs & Containers
-MP4, MKV, MOV
 | Container | Video Codec                 | Audio Codec |
 | ---       |---                          | ---         |
 | MP4       | x264                        | aac         |
