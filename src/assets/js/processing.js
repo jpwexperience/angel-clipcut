@@ -310,6 +310,7 @@ function playVideo(film, playerUpdate) {
 		mpvPath = "/usr/bin/mpv";
 	} 
 	if(!hasPathError){
+		// MPV path seems to be the biggest thing. I should have the dialogue popup on error 
 		const mpvPlay = spawn(mpvPath, 
 			['--osd-fractions', film.filePath]);
 		mpvPlay.stderr.on('data', (data) => {

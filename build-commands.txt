@@ -6,7 +6,8 @@ npm install electron-packager --save-dev
 npm install electron-packager -g
 
 Mac:
-electron-packager . --overwrite --platform=darwin --arch=x64 --icon=assets/icons/mac/icon.icns --prune=true --out=release-builds
+electron-packager . --overwrite --platform=darwin --arch=x64
+--icon=assets/neatfilms_icon.icns --prune=true --out=builds
 	DMG:
 	https://www.christianengvall.se/dmg-installer-electron-app/
 	# For use in npm scripts
