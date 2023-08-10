@@ -1,3 +1,5 @@
+![Angel Clip/Cut screenshot](https://data.jpwexperience.com/wp-content/uploads/2023/08/screenshot_angel-clipcut_compress.jpg)
+
 # Angel Clip / Cut
 
 Cross platform utility to create web optimized video clips from larger files using ffmpeg. 
