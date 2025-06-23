@@ -9,7 +9,7 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "angel": "ng build --base-href ./ && electron ."
+    "angel": "ng build --base-href ./ && electron --no-sandbox ."
   },
   "browser": {
     "child_process": false

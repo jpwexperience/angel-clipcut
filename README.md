@@ -13,8 +13,11 @@ Requires Node.js
 # Clone Repository
 git clone https://github.com/jpwexperience/angel-clipcut.git
 
+# NPM Version 
+nvm use 16.13.1 or fnm use 16.13.1
+
 # go into directory and install dependencies
-cd angel-clipcut && npm i
+cd angel-clipcut && npm i --force
 
 # run it 
 npm run angel
