@@ -46,3 +46,9 @@ Subrip and picture based subtitle streams will be extracted from the video file 
 | MOV       | x264                        | aac         |
 | GIF       | palettegen from x264        | n/a         |
 | WEBM      | libvpx                      | libvorbis   |
+
+# Web Audio
+
+I've found that most platforms work better with AAC audio at 128kbps. I haven't added any deeper audio options within this program. 
+
+Personally I like to run `ffmpeg -i <input file name> -c:v copy -b:a 128k -ac 1 <output file name>` after cutting for files going to social. Keep the bitrate down and turn to mono.
